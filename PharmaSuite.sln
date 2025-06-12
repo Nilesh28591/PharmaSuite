@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PharmaSuitAPICratetion", "PharmaSuitAPICratetion", "{D0A71B08-997B-464C-A098-3637571AC705}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PharmaSuitAPIConSuming", "PharmaSuitAPIConSuming", "{BED0CAE5-7F3D-4704-8C7E-6BB41EAB7A81}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PharmaSuiteMVC", "PharmaSuiteMVC\PharmaSuiteMVC.csproj", "{BAF06993-1A9A-4699-985D-ECAE19B4559F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PharmaSuiteWebAPI", "PharmaSuiteWebAPI\PharmaSuiteWebAPI.csproj", "{D9BBB59D-5C14-4D39-B469-CE1601FA0315}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BAF06993-1A9A-4699-985D-ECAE19B4559F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAF06993-1A9A-4699-985D-ECAE19B4559F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAF06993-1A9A-4699-985D-ECAE19B4559F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAF06993-1A9A-4699-985D-ECAE19B4559F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9BBB59D-5C14-4D39-B469-CE1601FA0315}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9BBB59D-5C14-4D39-B469-CE1601FA0315}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9BBB59D-5C14-4D39-B469-CE1601FA0315}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9BBB59D-5C14-4D39-B469-CE1601FA0315}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BAF06993-1A9A-4699-985D-ECAE19B4559F} = {D0A71B08-997B-464C-A098-3637571AC705}
+		{D9BBB59D-5C14-4D39-B469-CE1601FA0315} = {BED0CAE5-7F3D-4704-8C7E-6BB41EAB7A81}
+	EndGlobalSection
+EndGlobal
