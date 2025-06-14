@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PharmaSuiteWebAPI.Model;
 
 namespace PharmaSuiteWebAPI.Data
 {
@@ -6,7 +7,7 @@ namespace PharmaSuiteWebAPI.Data
     {
         public PharmaSuiteDBContext(DbContextOptions<PharmaSuiteDBContext> options):base(options)
         {
-            
-        }
+
     }
+}
 }
