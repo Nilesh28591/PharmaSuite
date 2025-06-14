@@ -12,7 +12,7 @@ namespace PharmaSuiteWebAPI.Model
         public Purchase Purchase { get; set; }
         [ForeignKey("Medicine")]
         public int MedicineId { get; set; }
-        public Medicine Medicine { get; set; }
+        public Medicine_Management Medicine { get; set; }
         [Required]
         public string? BatchNo { get; set; }
         [Required]

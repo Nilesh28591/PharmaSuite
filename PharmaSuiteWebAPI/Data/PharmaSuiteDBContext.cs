@@ -12,7 +12,9 @@ namespace PharmaSuiteWebAPI.Data
         public DbSet<Purchase> purchase { get; set; }
         public DbSet<PurchaseItem> purchaseItem { get; set; }
         public DbSet<Supplier> supplier { get; set; }
-        public DbSet<Medicine> medicine { get; set; }   
+        public DbSet<Medicine_Management> Medicine_Managements { get; set; }
+        public DbSet<Category> Medicine_categories { get; set; }
+        public DbSet<Manifacturer_Medicine> Medicine_Manifacturer { get; set; }
 
     }
 }
