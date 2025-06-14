@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PharmaSuiteWebAPI.Model;
 
 namespace PharmaSuiteWebAPI.Data
 {
@@ -8,5 +9,10 @@ namespace PharmaSuiteWebAPI.Data
         {
             
         }
+        public DbSet<Purchase> purchase { get; set; }
+        public DbSet<PurchaseItem> purchaseItem { get; set; }
+        public DbSet<Supplier> supplier { get; set; }
+        public DbSet<Medicine> medicine { get; set; }   
+
     }
 }
