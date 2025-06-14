@@ -5,9 +5,9 @@ namespace PharmaSuiteWebAPI.Data
 {
     public class PharmaSuiteDBContext:DbContext
     {
-        public PharmaSuiteDBContext(DbContextOptions<PharmaSuiteDBContext> options):base(options)
-        {
-
+        public PharmaSuiteDBContext(DbContextOptions<PharmaSuiteDBContext> options):base(options) {}
+        public DbSet<Medicine_Management> Medicine_Managements { get; set; }
+        public DbSet<Category> Medicine_categories { get; set; }
+        public DbSet<Manifacturer_Medicine> Medicine_Manifacturer { get; set; }
     }
-}
 }
