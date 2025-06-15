@@ -1,0 +1,57 @@
+﻿@model Manifacture_Dto_add
+
+@{
+    ViewData["Title"] = "Add_Mfg";
+}
+
+
+<h1>Add_Mfg</h1>
+
+<h4>Manifacture_Dto_add</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Add_Mfg">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label class="control-label">Manufacturer</label>
+                <input asp-for="mName" class="form-control" />
+                <span asp-validation-for="mName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="status" class="control-label"></label>
+                <select asp-for="status" class="form-control">
+                    <option value="">add-Mfg</option>
+                    <option value="Active">Active</option>
+                    <option value="InActive">InActive</option>
+
+                </select>
+                <span asp-validation-for="status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="createdBy" class="control-label"></label>
+                <input asp-for="createdBy" class="form-control" />
+                <span asp-validation-for="createdBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="createdAt" class="control-label"></label>
+                <input asp-for="createdAt" class="form-control" />
+                <span asp-validation-for="createdAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

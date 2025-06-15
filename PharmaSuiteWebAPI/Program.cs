@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PharmaSuiteWebAPI.Data;
 
@@ -11,12 +12,16 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 // Register database context
 builder.Services.AddDbContext<PharmaSuiteDBContext>
-    (
-        options => options.UseSqlServer
+
+
+(
+    options => options.UseSqlServer
         (
             builder.Configuration.GetConnectionString("dbconn")
         )
     );
+builder.Services.AddAutoMapper(typeof(MappingData));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

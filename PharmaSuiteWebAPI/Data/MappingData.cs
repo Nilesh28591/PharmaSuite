@@ -10,6 +10,8 @@ namespace PharmaSuiteWebAPI.Data
         {
             CreateMap<PurchaseDTO, Purchase>();
             CreateMap<PurchaseItemDTO, PurchaseItem>();
+            CreateMap<Medicine_Management, Medicine_Dto>().ReverseMap();
+
         }
     }
 }

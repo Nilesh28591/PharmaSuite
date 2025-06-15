@@ -1,0 +1,69 @@
+﻿@model Medicine_Management
+
+@{
+    ViewData["Title"] = "Add_Medicine";
+}
+
+<h1>Add_Medicine</h1>
+
+<h4>Medicine_Management</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Add_Medicine">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @* <div class="form-group"> *@
+            @*     <label asp-for="medicineId" class="control-label"></label> *@
+            @*     <input asp-for="medicineId" class="form-control" /> *@
+            @*     <span asp-validation-for="medicineId" class="text-danger"></span> *@
+            @* </div> *@
+            <div class="form-group">
+                <label asp-for="name" class="control-label"></label>
+                <input asp-for="name" class="form-control" />
+                <span asp-validation-for="name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="category" class="control-label"></label>
+                <select asp-for="category" class="form-control" asp-items="@ViewBag.Cat">
+                    <option value="">select</option>
+                </select>
+                <span asp-validation-for="category" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="manufacturer" class="control-label"></label>
+                <select asp-for="manufacturer" class="form-control" asp-items="@ViewBag.Mfg">
+                    <option value="">select</option>
+                </select>
+                <span asp-validation-for="manufacturer" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="pricePerUnit" class="control-label"></label>
+                <input asp-for="pricePerUnit" class="form-control" />
+                <span asp-validation-for="pricePerUnit" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BatchNo" class="control-label"></label>
+                <input asp-for="BatchNo" class="form-control" />
+                <span asp-validation-for="BatchNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="expiryDate" class="control-label"></label>
+                <input asp-for="expiryDate" class="form-control" />
+                <span asp-validation-for="expiryDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
