@@ -1,10 +1,13 @@
-﻿using PharmaSuiteWebAPI.Model;
+﻿using PharmaSuiteWebAPI.Dto;
+using PharmaSuiteWebAPI.Model;
 
 namespace PharmaSuiteWebAPI.Repo
 {
     public interface IPurchasesRepo
     {
-        Task AddPurchasAsyc(Purchase purchase);
-        Task<List<Purchase>> GetAllPurchas();   
+        Task AddPurchasAsyc(PurchaseDTO purchasedto);
+        Task<List<PurchaseDTO>> GetAllPurchas();
+
+        Task<List<MedicineStockDTO>> GelAllMedicineStockAsync();
     }
 }

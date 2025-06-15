@@ -3,6 +3,8 @@
     public class PurchaseItemDTO
     {
         public int MedicineId { get; set; }
+        public int PurchaseItemId { get; set; }
+        public string Name { get; set; }
         public string BatchNo { get; set; }
         public DateTime MfgDate { get; set; }
         public DateTime ExpiryDate { get; set; }
