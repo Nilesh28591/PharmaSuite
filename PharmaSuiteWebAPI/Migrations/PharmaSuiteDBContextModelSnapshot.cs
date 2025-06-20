@@ -220,6 +220,62 @@ namespace PharmaSuiteWebAPI.Migrations
                     b.ToTable("purchaseItem");
                 });
 
+            modelBuilder.Entity("PharmaSuiteWebAPI.Model.Sale", b =>
+                {
+                    b.Property<int>("SaleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SaleId"));
+
+                    b.Property<string>("CustomerName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime>("SaleDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("TotalAmount")
+                        .HasColumnType("float");
+
+                    b.HasKey("SaleId");
+
+                    b.ToTable("Sales");
+                });
+
+            modelBuilder.Entity("PharmaSuiteWebAPI.Model.SaleItem", b =>
+                {
+                    b.Property<int>("ItemId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ItemId"));
+
+                    b.Property<double?>("Discount")
+                        .HasColumnType("float");
+
+                    b.Property<int>("MedicineId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("PricePerUnit")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SaleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ItemId");
+
+                    b.HasIndex("MedicineId");
+
+                    b.HasIndex("SaleId");
+
+                    b.ToTable("SaleItems");
+                });
+
             modelBuilder.Entity("PharmaSuiteWebAPI.Model.Supplier", b =>
                 {
                     b.Property<int>("SupplierId")
@@ -297,9 +353,33 @@ namespace PharmaSuiteWebAPI.Migrations
                     b.Navigation("Purchase");
                 });
 
+            modelBuilder.Entity("PharmaSuiteWebAPI.Model.SaleItem", b =>
+                {
+                    b.HasOne("PharmaSuiteWebAPI.Model.Medicine_Management", "Medicine")
+                        .WithMany()
+                        .HasForeignKey("MedicineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PharmaSuiteWebAPI.Model.Sale", "Sale")
+                        .WithMany("SaleItems")
+                        .HasForeignKey("SaleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Medicine");
+
+                    b.Navigation("Sale");
+                });
+
             modelBuilder.Entity("PharmaSuiteWebAPI.Model.Purchase", b =>
                 {
                     b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("PharmaSuiteWebAPI.Model.Sale", b =>
+                {
+                    b.Navigation("SaleItems");
                 });
 
             modelBuilder.Entity("PharmaSuiteWebAPI.Model.Supplier", b =>

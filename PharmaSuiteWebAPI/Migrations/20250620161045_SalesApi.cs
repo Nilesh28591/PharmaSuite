@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PharmaSuiteWebAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class pharmasuitemedicinepurchase : Migration
+    public partial class SalesApi : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -66,6 +66,21 @@ namespace PharmaSuiteWebAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Sales",
+                columns: table => new
+                {
+                    SaleId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SaleDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CustomerName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    TotalAmount = table.Column<double>(type: "float", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sales", x => x.SaleId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "supplier",
                 columns: table => new
                 {
@@ -84,6 +99,35 @@ namespace PharmaSuiteWebAPI.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_supplier", x => x.SupplierId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SaleItems",
+                columns: table => new
+                {
+                    ItemId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SaleId = table.Column<int>(type: "int", nullable: false),
+                    MedicineId = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    PricePerUnit = table.Column<double>(type: "float", nullable: false),
+                    Discount = table.Column<double>(type: "float", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SaleItems", x => x.ItemId);
+                    table.ForeignKey(
+                        name: "FK_SaleItems_Medicine_Managements_MedicineId",
+                        column: x => x.MedicineId,
+                        principalTable: "Medicine_Managements",
+                        principalColumn: "MedicineId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SaleItems_Sales_SaleId",
+                        column: x => x.SaleId,
+                        principalTable: "Sales",
+                        principalColumn: "SaleId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -124,6 +168,7 @@ namespace PharmaSuiteWebAPI.Migrations
                     ExpiryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     CostPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    MinQuantity = table.Column<int>(type: "int", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -160,6 +205,16 @@ namespace PharmaSuiteWebAPI.Migrations
                 name: "IX_purchaseItem_PurchaseId",
                 table: "purchaseItem",
                 column: "PurchaseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SaleItems_MedicineId",
+                table: "SaleItems",
+                column: "MedicineId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SaleItems_SaleId",
+                table: "SaleItems",
+                column: "SaleId");
         }
 
         /// <inheritdoc />
@@ -175,10 +230,16 @@ namespace PharmaSuiteWebAPI.Migrations
                 name: "purchaseItem");
 
             migrationBuilder.DropTable(
-                name: "Medicine_Managements");
+                name: "SaleItems");
 
             migrationBuilder.DropTable(
                 name: "purchase");
+
+            migrationBuilder.DropTable(
+                name: "Medicine_Managements");
+
+            migrationBuilder.DropTable(
+                name: "Sales");
 
             migrationBuilder.DropTable(
                 name: "supplier");

@@ -1,6 +1,8 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PharmaSuiteWebAPI.Data;
+using PharmaSuiteWebAPI.Repo;
+using PharmaSuiteWebAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +22,7 @@ builder.Services.AddDbContext<PharmaSuiteDBContext>
             builder.Configuration.GetConnectionString("dbconn")
         )
     );
+builder.Services.AddScoped<ISaleRepo, SaleService>();
 builder.Services.AddAutoMapper(typeof(MappingData));
 
 var app = builder.Build();
