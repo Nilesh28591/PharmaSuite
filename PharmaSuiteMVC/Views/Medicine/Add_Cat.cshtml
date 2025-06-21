@@ -1,0 +1,68 @@
+﻿@* @model Pharme_Consume.Models.Category_Dto *@
+
+@{
+	ViewData["Title"] = "Add_Cat";
+}
+<input type="button" id="Demo" value="demo" />
+<div class="modal" id="Modal" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Modal title</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form asp-action="Add_Cat" id="EmpForm">
+					@* <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
+
+					<div class="form-group">
+						<label class="control-label">categoryName</label>
+						<input name="categoryName" class="form-control" />
+					</div>
+					<div class="form-group">
+						<label class="control-label">status</label>
+						<select name="status" class="form-control">
+							<option value="">add-Category</option>
+							<option value="Active">Active</option>
+							<option value="InActive">InActive</option>
+
+						</select>
+					</div>
+					<div class="form-group">
+						<label class="control-label">createdBy</label>
+						<input name="createdBy" class="form-control" />
+					</div>
+
+
+					<div class="form-group">
+						<label class="control-label">createdAt</label>
+						<input type="date" name="createdAt" class="form-control" />
+					</div>
+					<div class="form-group">
+					</div>
+				</form>
+
+				<p>Modal body text goes here.</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" id="save" class="btn btn-primary">Save changes</button>
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div>
+	<a asp-action="Index">Back to List</a>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/javascript.js"></script>
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}

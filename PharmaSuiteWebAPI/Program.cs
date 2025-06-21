@@ -22,13 +22,14 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.WriteIndented = true;
     });
 builder.Services.AddDbContext<PharmaSuiteDBContext>
-    (
-        options => options.UseSqlServer
+
+
+(
+    options => options.UseSqlServer
         (
             builder.Configuration.GetConnectionString("dbconn")
         )
     );
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

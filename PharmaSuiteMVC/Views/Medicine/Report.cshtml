@@ -1,0 +1,126 @@
+﻿<h2>Low Stock Alert</h2>
+
+<div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+	<div class="card-header">Stock Alert</div>
+	<div class="card-body">
+		<h5 class="card-title">Low Stock Items</h5>
+		<p class="card-text" style="font-size: 24px; font-weight: bold;">
+			@ViewBag.Count
+		</p>
+	</div>
+</div>
+
+<div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+	<div class="card-header">Stock Alert</div>
+	<div class="card-body">
+		<h5 class="card-title"> expired Items</h5>
+		<p class="card-text" style="font-size: 24px; font-weight: bold;">
+			@ViewBag.Exp
+		</p>
+	</div>
+</div>
+
+<div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+	<div class="card-header">Stock Alert</div>
+	<div class="card-body">
+		<h5 class="card-title"> 30days Remaining to expire Items</h5>
+		<p class="card-text" style="font-size: 24px; font-weight: bold;">
+			@ViewBag.ExpAlert
+		</p>
+	</div>
+</div>
+
+
+
+<table class="table">
+	<thead>
+		<tr>
+			<th scope="col">ID</th>
+			<th scope="col">Medicine</th>
+			<th scope="col">BatchNo</th>
+			<th scope="col">mfg-date</th>
+			<th scope="col">ExpiryDate</th>
+			<th scope="col">Quantity</th>
+			<th scope="col">Minimum Quantity</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var i in ViewBag.StockAlertTable)
+		{
+			<tr>
+				<th scope="row">@i.PurchaseItemId</th>
+				<td>@i.MedicineName</td>
+				<td>@i.BatchNo</td>
+				<td>@i.MfgDate</td>
+				<td>@i.ExpiryDate</td>
+				<td>@i.Quantity</td>
+				<td>@i.MinQuantity</td>
+
+			</tr>
+		}
+
+
+	</tbody>
+</table>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th scope="col">ID</th>
+			<th scope="col">Medicine</th>
+			<th scope="col">BatchNo</th>
+			<th scope="col">mfg-date</th>
+			<th scope="col">ExpiryDate</th>
+			<th scope="col">Quantity</th>
+			<th scope="col">Minimum Quantity</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var i in ViewBag.expAlertTable)
+		{
+			<tr>
+				<th scope="row">@i.PurchaseItemId</th>
+				<td>@i.MedicineName</td>
+				<td>@i.BatchNo</td>
+				<td>@i.MfgDate</td>
+				<td>@i.ExpiryDate</td>
+				<td>@i.Quantity</td>
+				<td>@i.MinQuantity</td>
+
+			</tr>
+		}
+
+
+	</tbody>
+</table>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th scope="col">ID</th>
+			<th scope="col">Medicine</th>
+			<th scope="col">BatchNo</th>
+			<th scope="col">mfg-date</th>
+			<th scope="col">ExpiryDate</th>
+			<th scope="col">Quantity</th>
+			<th scope="col">Minimum Quantity</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var i in ViewBag.PriorExpAlertTable)
+		{
+			<tr>
+				<th scope="row">@i.PurchaseItemId</th>
+				<td>@i.MedicineName</td>
+				<td>@i.BatchNo</td>
+				<td>@i.MfgDate</td>
+				<td>@i.ExpiryDate</td>
+				<td>@i.Quantity</td>
+				<td>@i.MinQuantity</td>
+
+			</tr>
+		}
+
+
+	</tbody>
+</table>

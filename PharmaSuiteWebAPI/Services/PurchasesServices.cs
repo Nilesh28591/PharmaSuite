@@ -18,48 +18,46 @@ namespace PharmaSuiteWebAPI.Services
         }
         public async Task AddPurchasAsyc(PurchaseDTO purchasedto)
         {
-            var data=_mapper.Map<Purchase>(purchasedto);
-            data.PurchaseDate=DateTime.Now;
+            var data = _mapper.Map<Purchase>(purchasedto);
+            data.PurchaseDate = DateTime.Now;
             data.CreatedAt = DateTime.Now;
-            data.ModifiedBy = purchasedto.CreatedBy; // <-- Fix
+            data.ModifiedBy = purchasedto.CreatedBy;
             data.ModifiedAt = DateTime.Now;
+
             data.Items = purchasedto.Items.Select(i =>
             {
-                var items = _mapper.Map<PurchaseItem>(i);
-                items.CreatedAt = DateTime.Now;
-                items.CreatedAt = DateTime.Now;
-                items.ModifiedBy = purchasedto.CreatedBy; // <-- Fix
-                items.ModifiedAt = DateTime.Now;
-                return items;
+                var item = _mapper.Map<PurchaseItem>(i);
+                item.CreatedAt = DateTime.Now;
+                item.ModifiedBy = purchasedto.CreatedBy;
+                item.ModifiedAt = DateTime.Now;
+                return item;
             }).ToList();
-           _Context.purchase.Add(data);
-            await _Context.SaveChangesAsync();
 
+            _Context.purchase.Add(data);
+            await _Context.SaveChangesAsync();
         }
 
-        public Task<List<MedicineStockDTO>> GelAllMedicineStockAsync()
+        public async Task<List<Medicine_Management>> GelAllMedicineStockAsync()
         {
-            var data = _Context.purchaseItem.GroupBy(i => new { i.MedicineId, i.Medicine.Name }).
-                      Select(x => new MedicineStockDTO
-                      {
-                          MedicineId=x.Key.MedicineId,
-                          Name=x.Key.Name,
-                          TotalQuantity=x.Sum(x=>x.Quantity)
-
-                      }).ToListAsync();
+            var data= await _Context.Medicine_Managements.ToListAsync();
             return data;
         }
 
         public async Task<List<PurchaseDTO>> GetAllPurchas()
         {
-           var data = await _Context.purchase
-        .Include(p => p.Supplier)
-        .Include(p => p.Items)
-            .ThenInclude(i => i.Medicine)
-        .OrderByDescending(p => p.PurchaseDate)
-        .ToListAsync();
+            var data = await _Context.purchase
+                .Include(p => p.Supplier)
+                .Include(p => p.Items).ThenInclude(i => i.Medicine)
+                .OrderByDescending(p => p.PurchaseDate)
+                .ToListAsync();
 
-             return _mapper.Map<List<PurchaseDTO>>(data);
+            return _mapper.Map<List<PurchaseDTO>>(data);
+        }
+
+        public async Task<IEnumerable<Supplier>> GetAllSupplier()
+        {
+            var data = await _Context.supplier.ToListAsync();
+            return data;
         }
     }
 }
