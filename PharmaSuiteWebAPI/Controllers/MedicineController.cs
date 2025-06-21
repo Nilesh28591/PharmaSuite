@@ -22,7 +22,7 @@ namespace PharmaSuiteWebAPI.Controllers
         [Route("StockAlert")]
         public IActionResult stockAlert() 
         {
-            int lowStockCount = db.purchaseItem
+                int lowStockCount = db.purchaseItem
                       .Where(x => x.Quantity <= x.MinQuantity)
                       .Count();
             return Ok(lowStockCount);
@@ -42,7 +42,7 @@ namespace PharmaSuiteWebAPI.Controllers
         {
             DateTime Days30 = DateTime.Now + TimeSpan.FromDays(30);
 
-            int lowStockCount = db.purchaseItem.Where(x => x.ExpiryDate <= Days30 && x.ExpiryDate> DateTime.Now).Count();
+            int lowStockCount = db.purchaseItem.Where(x => x.ExpiryDate <= Days30 && x.ExpiryDate>= DateTime.Now).Count();
             return Ok(lowStockCount);
         }
 
@@ -86,6 +86,37 @@ namespace PharmaSuiteWebAPI.Controllers
 
             }).ToList();
             return Ok(lowStockCount);
+        }
+
+        [HttpGet]
+        [Route("TodaySale")]
+        public IActionResult TodaySaleTable() 
+        {
+           var total_sale =  db.SaleItems.Include(x => x.Sale).Include(x => x.Medicine).Where(x=> x.Sale.SaleDate.Date.Equals(DateTime.Today)).Select(x=> new TodaySaleDto() 
+            {
+                CustomerName = x.Sale.CustomerName,
+                SaleDate = x.Sale.SaleDate,
+                Quantity = x.Quantity,
+                Discount = x.Discount,
+                TotalAmount = x.Sale.TotalAmount,
+                MedicineName = x.Medicine.Name
+                
+            }).ToList();
+            return Ok(total_sale);
+        }
+        [HttpGet]
+        [Route("Top5")]
+        public IActionResult Top5()
+        {
+            var total_sale = db.SaleItems.Include(x => x.Medicine).GroupBy(x=>x.Medicine.Name).Select(y => new Top5Dto()
+            {
+               
+                Quantity = y.Sum(x=>x.Quantity),
+                
+                MedicineName = y.Key
+
+            }).OrderByDescending(x => x.Quantity).Take(5).ToList();
+            return Ok(total_sale);
         }
 
         [HttpGet]
@@ -223,6 +254,56 @@ namespace PharmaSuiteWebAPI.Controllers
         public IActionResult Fetch_Mfg()
         {
             var list = db.Medicine_Manifacturer.Where(x => x.Status.Equals("Active")).ToList();
+            return Ok(list);
+        }
+
+        [HttpGet]
+        [Route("Sumsales")]
+        public IActionResult SumSales()
+        {
+            double list = db.Sales.Sum(x => x.TotalAmount);
+            return Ok(list);
+        }
+
+        [HttpGet]
+        [Route("SumMedicines")]
+        public IActionResult SumMeds()
+        {
+            double list = db.purchaseItem.Sum(x => x.Quantity);
+            return Ok(list);
+        }
+
+        
+
+        [HttpGet]
+        [Route("MonthGraph")]
+        public IActionResult MonthGraph()
+        {
+            var list = db.Sales
+    .GroupBy(s => s.SaleDate.Month)
+    .Select(g => new
+    {
+        Month = g.Key,
+        Total = g.Sum(s => s.TotalAmount)
+    })
+    .OrderBy(x => x.Month)
+    .ToList();
+            return Ok(list);
+        }
+
+        [HttpGet]
+        [Route("YearGraph")]
+        public IActionResult YearGraphx ()
+        {
+            var list = db.Sales
+    .GroupBy(s => s.SaleDate.Year)
+    .Select(g => new
+    {
+        Month = g.Key,
+        Total = g.Sum(s => s.TotalAmount)
+    })
+    .OrderBy(x => x.Month)
+    .ToList();
             return Ok(list);
         }
 

@@ -14,12 +14,11 @@ namespace PharmaSuiteMVC.Controllers
         public MedicineController() 
         {
             HttpClientHandler handler = new HttpClientHandler();
-            handler.ServerCertificateCustomValidationCallback = (SslPolicyErrors, chain, cert, sender) => { return true; };
+            handler.ServerCertificateCustomValidationCallback = (SslPolicyErrors, chain, cert, sender) => { return true;};
             client = new HttpClient(handler);
         }
         public IActionResult Report()
         {
-            List<PurchaseItemDto> meds = new List<PurchaseItemDto>();
             string url = "https://localhost:7259/api/Medicine/StockAlert";
             HttpResponseMessage response = client.GetAsync(url).Result;
             if (response.IsSuccessStatusCode)
@@ -79,7 +78,88 @@ namespace PharmaSuiteMVC.Controllers
                 ViewBag.PriorExpAlertTable = obj8;
             }
 
+            string urlTotalSales = "https://localhost:7259/api/Medicine/TodaySale/";
+            HttpResponseMessage responseTotalSale = client.GetAsync(urlTotalSales).Result;
+            if (responseTotalSale.IsSuccessStatusCode)
+            {
+                var json8 = responseTotalSale.Content.ReadAsStringAsync().Result;
+                var obj8 = JsonConvert.DeserializeObject<List<TodaySaleDto>>(json8);
+                ViewBag.TotalSaleToday = obj8;
+            }
 
+            string urlsMonth = "https://localhost:7259/api/Medicine/MonthGraph/";
+            HttpResponseMessage responsesMonth = client.GetAsync(urlsMonth).Result;
+            if (responsesMonth.IsSuccessStatusCode)
+            {
+                var json = responsesMonth.Content.ReadAsStringAsync().Result;
+                var obj = JsonConvert.DeserializeObject<List<SalesDtoSF>>(json);
+                ViewBag.Report = obj;
+            }
+
+            //string urlsYear = "https://localhost:7259/api/Medicine/YearGraph/";
+            //HttpResponseMessage responsesYear = client.GetAsync(urlsYear).Result;
+            //if (responsesYear.IsSuccessStatusCode)
+            //{
+            //    var json = responsesYear.Content.ReadAsStringAsync().Result;
+            //    var obj = JsonConvert.DeserializeObject<List<SalesDtoSF>>(json);
+            //    ViewBag.year = obj;
+            //}
+
+            string Sumurl = "https://localhost:7259/api/Medicine/SumSales/";
+            HttpResponseMessage responseSum = client.GetAsync(Sumurl).Result;
+            if (responseSum.IsSuccessStatusCode)
+            {
+                var json8 = responseSum.Content.ReadAsStringAsync().Result;
+                var obj8 = JsonConvert.DeserializeObject<int>(json8);
+                ViewBag.SumSale = obj8;
+            }
+
+            string SumMedsurl = "https://localhost:7259/api/Medicine/SumMedicines/";
+            HttpResponseMessage responseSumMeds = client.GetAsync(SumMedsurl).Result;
+            if (responseSumMeds.IsSuccessStatusCode)
+            {
+                var json8 = responseSumMeds.Content.ReadAsStringAsync().Result;
+                var obj8 = JsonConvert.DeserializeObject<int>(json8);
+                ViewBag.SumSaleMeds = obj8;
+            }
+            string Top5url = "https://localhost:7259/api/Medicine/Top5/";
+
+            HttpResponseMessage responseTop5 = client.GetAsync(Top5url).Result;
+            if (responseTop5.IsSuccessStatusCode)
+            {
+                var json8 = responseTop5.Content.ReadAsStringAsync().Result;
+                var obj8 = JsonConvert.DeserializeObject<List<Top5>>(json8);
+                ViewBag.Top5 = obj8;
+            }
+
+
+            return View();
+        }
+        public IActionResult TotalReports()
+        {
+            //List<SalesDtoSF> meds = new List<SalesDtoSF>();
+            //string url = "https://localhost:7259/api/Medicine/MonthGraph/";
+            //HttpResponseMessage response = client.GetAsync(url).Result;
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    var json = response.Content.ReadAsStringAsync().Result;
+            //    var obj = JsonConvert.DeserializeObject<List<SalesDtoSF>>(json);
+            //    ViewBag.Report = obj;
+            //}
+            return View();
+        }
+
+        public IActionResult empty() 
+        {
+            List<SalesDtoSF> meds = new List<SalesDtoSF>();
+            string url = "https://localhost:7259/api/Medicine/MonthGraph/";
+            HttpResponseMessage response = client.GetAsync(url).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                var json = response.Content.ReadAsStringAsync().Result;
+                var obj = JsonConvert.DeserializeObject<List<SalesDtoSF>>(json);
+                ViewBag.Report = obj;
+            }
             return View();
         }
 
