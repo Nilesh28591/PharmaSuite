@@ -6,11 +6,30 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PharmaSuiteWebAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class SalesApi : Migration
+    public partial class Customer : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Customers",
+                columns: table => new
+                {
+                    CustomerId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Mobile = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Customers", x => x.CustomerId);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Medicine_categories",
                 columns: table => new
@@ -66,21 +85,6 @@ namespace PharmaSuiteWebAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Sales",
-                columns: table => new
-                {
-                    SaleId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    SaleDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CustomerName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    TotalAmount = table.Column<double>(type: "float", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Sales", x => x.SaleId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "supplier",
                 columns: table => new
                 {
@@ -91,6 +95,46 @@ namespace PharmaSuiteWebAPI.Migrations
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_supplier", x => x.SupplierId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Sales",
+                columns: table => new
+                {
+                    SaleId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SaleDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CustomerName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    TotalAmount = table.Column<double>(type: "float", nullable: false),
+                    CustomerId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sales", x => x.SaleId);
+                    table.ForeignKey(
+                        name: "FK_Sales_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "CustomerId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "purchase",
+                columns: table => new
+                {
+                    PurchaseId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SupplierId = table.Column<int>(type: "int", nullable: false),
+                    PurchaseDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    InvoiceNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -98,7 +142,13 @@ namespace PharmaSuiteWebAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_supplier", x => x.SupplierId);
+                    table.PrimaryKey("PK_purchase", x => x.PurchaseId);
+                    table.ForeignKey(
+                        name: "FK_purchase_supplier_SupplierId",
+                        column: x => x.SupplierId,
+                        principalTable: "supplier",
+                        principalColumn: "SupplierId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -127,31 +177,6 @@ namespace PharmaSuiteWebAPI.Migrations
                         column: x => x.SaleId,
                         principalTable: "Sales",
                         principalColumn: "SaleId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "purchase",
-                columns: table => new
-                {
-                    PurchaseId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    SupplierId = table.Column<int>(type: "int", nullable: false),
-                    PurchaseDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    InvoiceNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_purchase", x => x.PurchaseId);
-                    table.ForeignKey(
-                        name: "FK_purchase_supplier_SupplierId",
-                        column: x => x.SupplierId,
-                        principalTable: "supplier",
-                        principalColumn: "SupplierId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -215,6 +240,11 @@ namespace PharmaSuiteWebAPI.Migrations
                 name: "IX_SaleItems_SaleId",
                 table: "SaleItems",
                 column: "SaleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Sales_CustomerId",
+                table: "Sales",
+                column: "CustomerId");
         }
 
         /// <inheritdoc />
@@ -243,6 +273,9 @@ namespace PharmaSuiteWebAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "supplier");
+
+            migrationBuilder.DropTable(
+                name: "Customers");
         }
     }
 }

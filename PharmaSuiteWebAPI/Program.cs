@@ -26,6 +26,9 @@ builder.Services.AddScoped<ISaleRepo, SaleService>();
 builder.Services.AddScoped<ISupplierRepo, SupplierService>();
 
 builder.Services.AddAutoMapper(typeof(MappingData));
+builder.Services.AddScoped<ICustomerRepo, CustomerService>();
+
+
 
 var app = builder.Build();
 

@@ -56,6 +56,43 @@ namespace PharmaSuiteWebAPI.Migrations
                     b.ToTable("Medicine_categories");
                 });
 
+            modelBuilder.Entity("PharmaSuiteWebAPI.Model.Customer", b =>
+                {
+                    b.Property<int>("CustomerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerId"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Mobile")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CustomerId");
+
+                    b.ToTable("Customers");
+                });
+
             modelBuilder.Entity("PharmaSuiteWebAPI.Model.Manifacturer_Medicine", b =>
                 {
                     b.Property<int>("ManId")
@@ -228,6 +265,9 @@ namespace PharmaSuiteWebAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SaleId"));
 
+                    b.Property<int?>("CustomerId")
+                        .HasColumnType("int");
+
                     b.Property<string>("CustomerName")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -240,6 +280,8 @@ namespace PharmaSuiteWebAPI.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("SaleId");
+
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("Sales");
                 });
@@ -351,6 +393,13 @@ namespace PharmaSuiteWebAPI.Migrations
                     b.Navigation("Purchase");
                 });
 
+            modelBuilder.Entity("PharmaSuiteWebAPI.Model.Sale", b =>
+                {
+                    b.HasOne("PharmaSuiteWebAPI.Model.Customer", null)
+                        .WithMany("Sales")
+                        .HasForeignKey("CustomerId");
+                });
+
             modelBuilder.Entity("PharmaSuiteWebAPI.Model.SaleItem", b =>
                 {
                     b.HasOne("PharmaSuiteWebAPI.Model.Medicine_Management", "Medicine")
@@ -368,6 +417,11 @@ namespace PharmaSuiteWebAPI.Migrations
                     b.Navigation("Medicine");
 
                     b.Navigation("Sale");
+                });
+
+            modelBuilder.Entity("PharmaSuiteWebAPI.Model.Customer", b =>
+                {
+                    b.Navigation("Sales");
                 });
 
             modelBuilder.Entity("PharmaSuiteWebAPI.Model.Purchase", b =>
