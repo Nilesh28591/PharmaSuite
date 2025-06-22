@@ -23,6 +23,8 @@ builder.Services.AddDbContext<PharmaSuiteDBContext>
         )
     );
 builder.Services.AddScoped<ISaleRepo, SaleService>();
+builder.Services.AddScoped<ISupplierRepo, SupplierService>();
+
 builder.Services.AddAutoMapper(typeof(MappingData));
 
 var app = builder.Build();

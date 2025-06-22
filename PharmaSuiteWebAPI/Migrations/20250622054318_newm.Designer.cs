@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PharmaSuiteWebAPI.Data;
 
@@ -11,9 +12,11 @@ using PharmaSuiteWebAPI.Data;
 namespace PharmaSuiteWebAPI.Migrations
 {
     [DbContext(typeof(PharmaSuiteDBContext))]
-    partial class PharmaSuiteDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250622054318_newm")]
+    partial class newm
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

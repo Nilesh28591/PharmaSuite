@@ -30,7 +30,7 @@ namespace PharmaSuiteMVC.Controllers
         public IActionResult Sale()
         {
             List<MedicineDTO> data = new List<MedicineDTO>();
-            string url = "https://localhost:7116/api/Sales/GetMedicines/";
+            string url = "https://localhost:7259/api/Sales/GetMedicines/";
 
             HttpResponseMessage response = client.GetAsync(url).Result;
             if (response.IsSuccessStatusCode)
@@ -49,7 +49,7 @@ namespace PharmaSuiteMVC.Controllers
         [HttpPost]
         public IActionResult Sale([FromBody] SaleDTO sale)
         {
-            string url = "https://localhost:7116/api/Sales/AddSales/";
+            string url = "https://localhost:7259/api/Sales/AddSales/";
             var json = JsonConvert.SerializeObject(sale);
             StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
             HttpResponseMessage response = client.PostAsync(url, content).Result;
@@ -75,7 +75,7 @@ namespace PharmaSuiteMVC.Controllers
         public IActionResult getSalesData()
         {
             List<SaleDTO> data = new List<SaleDTO>();
-            string url = "https://localhost:7116/api/Sales/FetchSales/";
+            string url = "https://localhost:7259/api/Sales/FetchSales/";
 
             HttpResponseMessage response = client.GetAsync(url).Result;
             if (response.IsSuccessStatusCode)
@@ -94,7 +94,7 @@ namespace PharmaSuiteMVC.Controllers
         public IActionResult generateInvoice(int id)
         {
             InvoiceDTO invoice = new InvoiceDTO();
-            string url = $"https://localhost:7116/api/Sales/getSaleBySaleIdToGenerateInvoice/{id}";
+            string url = $"https://localhost:7259/api/Sales/getSaleBySaleIdToGenerateInvoice/{id}";
 
             HttpResponseMessage response = client.GetAsync(url).Result;
             if (response.IsSuccessStatusCode)
@@ -197,7 +197,7 @@ namespace PharmaSuiteMVC.Controllers
         public IActionResult getSaleItems(int id)
         {
             List<Items> saleitems = new List<Items>();
-            string url = $"https://localhost:7116/api/Sales/getSaleItemByID/{id}";
+            string url = $"https://localhost:7259/api/Sales/getSaleItemByID/{id}";
 
             HttpResponseMessage response = client.GetAsync(url).Result;
             if (response.IsSuccessStatusCode)
@@ -217,7 +217,7 @@ namespace PharmaSuiteMVC.Controllers
 
         public IActionResult getQuantity(int id)
         {
-            string url = $"https://localhost:7116/api/Sales/getQuantity/{id}";
+            string url = $"https://localhost:7259/api/Sales/getQuantity/{id}";
 
             HttpResponseMessage response = client.GetAsync(url).Result;
 
@@ -234,7 +234,7 @@ namespace PharmaSuiteMVC.Controllers
         }
         public IActionResult getUnitPrice(int id)
         {
-            string url = $"https://localhost:7116/api/Sales/getUnitPrice/{id}";
+            string url = $"https://localhost:7259/api/Sales/getUnitPrice/{id}";
 
             HttpResponseMessage response = client.GetAsync(url).Result;
 
@@ -251,7 +251,7 @@ namespace PharmaSuiteMVC.Controllers
         private void PopulateMedicines()
         {
             List<MedicineDTO> data = new List<MedicineDTO>();
-            string url = "https://localhost:7116/api/Sales/GetMedicines/";
+            string url = "https://localhost:7259/api/Sales/GetMedicines/";
             HttpResponseMessage response = client.GetAsync(url).Result;
             if (response.IsSuccessStatusCode)
             {
