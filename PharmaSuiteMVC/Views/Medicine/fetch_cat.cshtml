@@ -1,76 +1,75 @@
-﻿@model IEnumerable<PharmaSuiteMVC.Models.Medicine_Management>
+﻿@model IEnumerable<PharmaSuiteMVC.Models.Category_Dto>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "fetch_cat";
 }
 
-<h1>Index</h1>
+<h1>fetch_cat</h1>
 
 <p>
-    <a asp-action="Add_Medicine">Create New</a>
+    <a asp-action="add_cat">Create New</a>
 </p>
 <table class="table" id="myTable">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.medicineId)
+                @Html.DisplayNameFor(model => model.catId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.name)
+                @Html.DisplayNameFor(model => model.categoryName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.category)
+                @Html.DisplayNameFor(model => model.status)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.manufacturer)
+                @Html.DisplayNameFor(model => model.createdBy)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.pricePerUnit)
+                @Html.DisplayNameFor(model => model.modifyBy)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BatchNo)
+                @Html.DisplayNameFor(model => model.modifyAt)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.expiryDate)
+                @Html.DisplayNameFor(model => model.createdAt)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.catId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.categoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.createdBy)
+            </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.medicineId)
+                    @Html.DisplayFor(modelItem => item.createdAt)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.category)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.manufacturer)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.pricePerUnit)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.BatchNo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.expiryDate)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit_Medicine", new { id = item.medicineId }) |
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Delete", "Delete_Medicine", new { id = item.medicineId })
-                </td>
-            </tr>
-        }
+            <td>
+                @Html.DisplayFor(modelItem => item.modifyBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.modifyAt)
+            </td>
+            
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
     </tbody>
 </table>
-
 
 @section Scripts {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
