@@ -1,4 +1,15 @@
-﻿$(document).on('change', 'select[name="MedicineId"]', function () {
+﻿$(document).on('click', '.selectCustomer', function () {
+    const customerId = $(this).data('id');
+    const customerName = $(this).data('name');
+
+    $('#CustomerName').val(customerName);
+    $('#CustomerId').val(customerId);
+
+    $('#customerModal').modal('hide');
+});
+
+
+$(document).on('change', 'select[name="MedicineId"]', function () {
     var medicineId = $(this).val();
     var $row = $(this).closest('.invoice-row');
     var $qtySpan = $row.find('.availableQty');
@@ -92,6 +103,7 @@ function calculateTotal() {
 
 function submitSale() {
     const sale = {
+        customerId: parseInt($('#CustomerId').val()),
         customerName: $('[name="CustomerName"]').val(),
         saleDate: new Date().toISOString(),
         totalAmount: parseFloat($('#totalAmount').val()),
@@ -108,7 +120,7 @@ function submitSale() {
         };
         sale.saleItems.push(item);
     });
-
+    console.log('CustomerId:', $('#CustomerId').val());
     $.ajax({
         url: "/Sale/Sale",
         method: "POST",

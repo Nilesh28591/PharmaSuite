@@ -248,6 +248,39 @@ namespace PharmaSuiteMVC.Controllers
             }
             return View();
         }
+        public IActionResult GetCustomers()
+        {
+            List<CustomerDTO> data2 = new List<CustomerDTO>();
+            string url2 = "https://localhost:7116/api/Sales/getCustomer";
+
+            HttpResponseMessage response2 = client.GetAsync(url2).Result;
+            if (response2.IsSuccessStatusCode)
+            {
+                var jsondata = response2.Content.ReadAsStringAsync().Result;
+                var obj2 = JsonConvert.DeserializeObject<List<CustomerDTO>>(jsondata);
+                if (obj2 != null)
+                {
+                    data2 = obj2;
+                    return new JsonResult(data2);
+                }
+            }
+            return View();
+
+
+        }
+        [HttpPost]
+        public IActionResult addCustomer([FromBody] CustomerDTO2 dto)
+        {
+            string url = "https://localhost:7116/api/Sales/addCustomer/";
+            var json = JsonConvert.SerializeObject(dto);
+            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = client.PostAsync(url, content).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Sale");
+            }
+            return View();
+        }
         private void PopulateMedicines()
         {
             List<MedicineDTO> data = new List<MedicineDTO>();

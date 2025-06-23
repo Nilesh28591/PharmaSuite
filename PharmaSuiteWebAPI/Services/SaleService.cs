@@ -158,5 +158,24 @@ namespace PharmaSuiteWebAPI.Services
             double pricePerUnit = data.PricePerUnit;
             return pricePerUnit;
         }
+        public List<Customer> GetCustomers()
+        {
+            var data = db.Customers.ToList();
+            return data;
+
+        }
+        public void addCustomer(CustomerDTO dto)
+        {
+            var data = new Customer()
+            {
+                Name = dto.Name,
+                Phone = dto.Phone,
+                Email = dto.Email,
+                Address = dto.Address
+            };
+            db.Customers.Add(data);
+            db.SaveChanges();
+        }   
+
     }
 }

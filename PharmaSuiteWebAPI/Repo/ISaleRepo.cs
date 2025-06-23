@@ -12,5 +12,7 @@ namespace PharmaSuiteWebAPI.Repo
         List<ItemsDTO> getItem(int id);
         int getQuantity(int id);
         double getUnitPrice(int id);
+        List<Customer> GetCustomers();
+        void addCustomer(CustomerDTO dto);
     }
 }

@@ -1,4 +1,5 @@
-﻿
+﻿@model SaleDTO
+
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
@@ -22,9 +23,10 @@
 
         <form id="salesForm">
             <div class="row g-3 mb-4">
-                <div class="col-md-6">
-                    <label class="form-label">Customer Name (optional)</label>
-                    <input type="text" name="CustomerName" class="form-control" placeholder="John Doe" />
+                <div class="input-group">
+                    <input type="text" id="CustomerName" name="CustomerName" class="form-control" placeholder="Select Customer" readonly />
+                    <input type="hidden" id="CustomerId" name="CustomerId" />
+                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#customerModal">Select</button>
                 </div>
             </div>
 
@@ -99,6 +101,80 @@
     </div>
 </div>
 
+<!-- Customer Selection Modal -->
+<div class="modal fade" id="customerModal" tabindex="-1" aria-labelledby="customerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="d-flex justify-content-between align-items-center w-100">
+                    <h5 class="modal-title mb-0">Select Customer</h5>
+                    <div>
+                        <button type="button" class="btn btn-success btn-sm me-2" id="btnNewCustomer">
+                            ➕ Add New Customer
+                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <table class="table table-bordered table-hover" id="customerTable">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Address</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customerTableBody">
+                        <!-- Populated via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- New Customer Modal -->
+<div class="modal fade" id="newCustomerModal" tabindex="-1" aria-labelledby="newCustomerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add New Customer</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="newCustomerForm">
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-control" name="Name" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Phone</label>
+                        <input type="text" class="form-control" name="Phone" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" name="Email" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Address</label>
+                        <textarea class="form-control" name="Address" rows="2"></textarea>
+                    </div>
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-success">💾 Save Customer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
 <div id="medicineOptions" style="display:none;">
     @foreach (var item in ViewBag.GetAllMedicine)
     {
@@ -107,13 +183,69 @@
 </div>
 
 @section Scripts {
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>    
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="~/js/sale.js"></script>
-
     <script>
+        let customerTable;
+         $('#customerModal').on('show.bs.modal', function () {
+            $.ajax({
+                url: '/Sale/GetCustomers',
+                method: 'GET',
+                success: function (data) {
+                    const tbody = $('#customerTableBody');
+                    tbody.empty(); // Clear old data
+
+                    data.forEach(customer => {
+                        const row = `
+                            <tr>
+                                <td>${customer.customerId}</td>
+                                <td>${customer.name}</td>
+                                <td>${customer.phone}</td>
+                                <td>${customer.email}</td>
+                                <td>${customer.address}</td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-primary selectCustomer"
+                                            data-id="${customer.customerId}" data-name="${customer.name}">
+                                        Select
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                        tbody.append(row);
+                    });
+        if ($.fn.DataTable.isDataTable('#customerTable')) {
+                          $('#customerTable').DataTable().destroy();
+                      }
+
+                      $('#customerTable').DataTable({
+                          destroy: true
+                      });
+                },
+                error: function () {
+                    alert('❌ Failed to load customer list.');
+                }
+            });
+        });
+        $(document).on('click', '.selectCustomer', function () {
+            const customerId = $(this).data('id');
+            const customerName = $(this).data('name');
+
+            $('#CustomerId').val(customerId);
+            $('#CustomerName').val(customerName);
+
+            $('#customerModal').modal('hide');
+
+            setTimeout(() => {
+                $('.modal-backdrop').remove();
+                $('body').removeClass('modal-open');
+            }, 300);
+        });
         $(document).ready(function () {
             // Show UPI Modal
             $('#ShowModal').on('click', function () {
@@ -123,7 +255,7 @@
                     return;
                 }
 
-                var upiID = "testuser@upi";
+                var upiID = "testuser@upi"; // Replace with real UPI ID
                 var payeeName = "PharmaSuite";
                 var upiURL = `upi://pay?pa=${upiID}&pn=${encodeURIComponent(payeeName)}&am=${totalAmount}&cu=INR`;
 
@@ -140,7 +272,7 @@
             // YES → Submit Sale
             $('#paymentYes').on('click', function () {
                 $('#upiModal').modal('hide');
-                submitSale(); // 
+                submitSale(); // 🔥 SAME function used for CASH
             });
 
             // NO → Just close modal
@@ -149,14 +281,57 @@
             });
 
             // CASH Button triggers form submit
-            $('#salesForm').on('submit', function (e) {
-                e.preventDefault();
-                submitSale();
-            });
+            // $('#salesForm').on('submit', function (e) {
+            //     e.preventDefault();
+            //     submitSale();
+            // });
 
-            
+            // Real-time total update
             $('#salesForm').on('input', calculateTotal);
         });
+    </script>
+    <script>
+                      // Open "Add Customer" Modal from "Select Customer" Modal
+        $('#btnNewCustomer').on('click', function () {
+            $('#customerModal').modal('hide');
+            $('#newCustomerModal').modal('show');
+        });
+
+        // Save new customer
+        $('#newCustomerForm').on('submit', function (e) {
+            e.preventDefault();
+
+            const customer = {
+                Name: $(this).find('[name="Name"]').val(),
+                Phone: $(this).find('[name="Phone"]').val(),
+                Email: $(this).find('[name="Email"]').val(),
+                Address: $(this).find('[name="Address"]').val()
+            };
+
+            $.ajax({
+                url: '/Sale/addCustomer', // Update if your route is different
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(customer),
+                success: function (data) {
+                    alert("✅ Customer added successfully!");
+
+                    // Set customer data in main form
+                    $('#CustomerId').val(data.customerId); // assuming API returns new customer with ID
+                    $('#CustomerName').val(data.name);
+
+                    // Close modal and return to sales page
+                      const modalInstance = bootstrap.Modal.getInstance(document.getElementById('newCustomerModal'));
+                       modalInstance.hide();
+
+
+                },
+                error: function () {
+                    alert("❌ Failed to add customer.");
+                }
+            });
+        });
+
     </script>
 
 }
