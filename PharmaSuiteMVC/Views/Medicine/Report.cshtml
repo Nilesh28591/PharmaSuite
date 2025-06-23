@@ -57,7 +57,7 @@
 		<div class="card-header bg-primary text-white text-center">
 			<h3 class="mb-0">🚨 Todays SalescSummary 🚨</h3>
 		</div>
-		<div class="card-body">
+		<div class="card-body" id="myTable">
 			<table class="table table-bordered table-hover text-center align-middle">
 				<thead class="table-dark">
 					<tr>
@@ -93,8 +93,8 @@
 		<div class="card-header bg-danger text-white text-center">
 			<h3 class="mb-0">🚨 Stock Alert 🚨</h3>
 		</div>
-		<div class="card-body">
-			<table class="table table-bordered table-hover text-center align-middle">
+		<div class="card-body" >
+			<table class="table table-bordered table-hover text-center align-middle" id="myTable2">
 				<thead class="table-dark">
 					<tr>
 						<th scope="col">ID</th>
@@ -132,7 +132,7 @@
 			<h3 class="mb-0">⏳ Expiry Alert ⏳</h3>
 		</div>
 		<div class="card-body">
-			<table class="table table-bordered table-hover text-center align-middle">
+			<table class="table table-bordered table-hover text-center align-middle" id="myTable3">
 				<thead class="table-dark">
 					<tr>
 						<th scope="col">ID</th>
@@ -170,7 +170,7 @@
 			<h3 class="mb-0">🕒 30 Days Remaining for Expiry</h3>
 		</div>
 		<div class="card-body">
-			<table class="table table-bordered table-hover text-center align-middle">
+			<table class="table table-bordered table-hover text-center align-middle" id="myTable4">
 				<thead class="table-dark">
 					<tr>
 						<th scope="col">ID</th>
@@ -364,3 +364,149 @@
 @* 	} *@
 @* 	}); *@
 @* </script> *@
+
+
+
+@section Scripts {
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="https://cdn.datatables.net/v/bs5/dt-2.3.1/b-3.2.3/b-html5-3.2.3/b-print-3.2.3/datatables.min.css" rel="stylesheet" />
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+	<script src="https://cdn.datatables.net/v/bs5/dt-2.3.1/b-3.2.3/b-html5-3.2.3/b-print-3.2.3/datatables.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+	<script>
+				$(document).ready(function () {
+			$('#myTable').DataTable({
+				dom: 'Bfrtip',
+				buttons: [
+					{
+						extend: 'copyHtml5',
+						title: 'Payment Receipt'
+					},
+					{
+						extend: 'excelHtml5',
+						title: 'Payment Receipt'
+					},
+					{
+						extend: 'pdfHtml5',
+						title: 'Payment Receipt',
+						orientation: 'portrait',
+						pageSize: 'A4',
+						customize: function (doc) {
+							doc.styles.tableHeader.alignment = 'left';
+							doc.defaultStyle.fontSize = 10;
+							doc.content[1].table.widths = ['*', '*', '*', '*', '*', '*', '*'];
+						}
+					},
+					{
+						extend: 'print',
+						title: ''
+					}
+				]
+			});
+		});
+
+	</script>
+	<script>
+				$(document).ready(function () {
+			$('#myTable2').DataTable({
+				dom: 'Bfrtip',
+				buttons: [
+					{
+						extend: 'copyHtml5',
+						title: 'Payment Receipt'
+					},
+					{
+						extend: 'excelHtml5',
+						title: 'Payment Receipt'
+					},
+					{
+						extend: 'pdfHtml5',
+						title: 'Payment Receipt',
+						orientation: 'portrait',
+						pageSize: 'A4',
+						customize: function (doc) {
+							doc.styles.tableHeader.alignment = 'left';
+							doc.defaultStyle.fontSize = 10;
+							doc.content[1].table.widths = ['*', '*', '*', '*', '*', '*', '*'];
+						}
+					},
+					{
+						extend: 'print',
+						title: ''
+					}
+				]
+			});
+		});
+
+	</script>
+	<script>
+				$(document).ready(function () {
+			$('#myTable3').DataTable({
+				dom: 'Bfrtip',
+				buttons: [
+					{
+						extend: 'copyHtml5',
+						title: 'Payment Receipt'
+					},
+					{
+						extend: 'excelHtml5',
+						title: 'Payment Receipt'
+					},
+					{
+						extend: 'pdfHtml5',
+						title: 'Payment Receipt',
+						orientation: 'portrait',
+						pageSize: 'A4',
+						customize: function (doc) {
+							doc.styles.tableHeader.alignment = 'left';
+							doc.defaultStyle.fontSize = 10;
+							doc.content[1].table.widths = ['*', '*', '*', '*', '*', '*', '*'];
+						}
+					},
+					{
+						extend: 'print',
+						title: ''
+					}
+				]
+			});
+		});
+
+	</script>
+	<script>
+				$(document).ready(function () {
+			$('#myTable4').DataTable({
+				dom: 'Bfrtip',
+				buttons: [
+					{
+						extend: 'copyHtml5',
+						title: 'Payment Receipt'
+					},
+					{
+						extend: 'excelHtml5',
+						title: 'Payment Receipt'
+					},
+					{
+						extend: 'pdfHtml5',
+						title: 'Payment Receipt',
+						orientation: 'portrait',
+						pageSize: 'A4',
+						customize: function (doc) {
+							doc.styles.tableHeader.alignment = 'left';
+							doc.defaultStyle.fontSize = 10;
+							doc.content[1].table.widths = ['*', '*', '*', '*', '*', '*', '*'];
+						}
+					},
+					{
+						extend: 'print',
+						title: ''
+					}
+				]
+			});
+		});
+
+	</script>
+}
