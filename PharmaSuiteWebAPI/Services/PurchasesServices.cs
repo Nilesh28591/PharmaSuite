@@ -30,6 +30,7 @@ namespace PharmaSuiteWebAPI.Services
                 item.CreatedAt = DateTime.Now;
                 item.ModifiedBy = purchasedto.CreatedBy;
                 item.ModifiedAt = DateTime.Now;
+                
                 return item;
             }).ToList();
 

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using PharmaSuiteWebAPI.Data;
 using PharmaSuiteWebAPI.Dto;
 using PharmaSuiteWebAPI.DTO;
 using PharmaSuiteWebAPI.Model;
@@ -15,9 +17,12 @@ namespace PharmaSuiteWebAPI.Controllers
     public class CustomerController : ControllerBase
     {
         ICustomerRepo repo;
-        public CustomerController(ICustomerRepo repo)
+        private readonly PharmaSuiteDBContext db;
+
+        public CustomerController(ICustomerRepo repo, PharmaSuiteDBContext db)
         {
             this.repo = repo;
+            this.db = db;
         }
 
         [HttpPost]
@@ -117,5 +122,23 @@ namespace PharmaSuiteWebAPI.Controllers
             await repo.DeleteCustomerAsync(id);
             return Ok(new { message = "Customer deleted successfully" });
         }
+
+        //[HttpGet]
+        //[Route("FetchSales")]
+        //public IActionResult sales()
+        //{
+        //    var data = db.Sales.Include(x => x.c).Include(x => x.SaleItems).ThenInclude(x => x.Medicine).
+        //        SelectMany(x => x.SaleItems.Select(y => new PurchaseHistoryDTO()
+        //        {
+        //            CustomerName = x.CustomerName,
+        //            Mobile = x.Customer.Mobile,
+        //            MedicineName = y.Medicine.Name,
+        //            TotalAmount = x.TotalAmount,
+        //            Discount = y.Discount,
+        //            Quantity = y.Quantity
+
+        //        })).ToList();
+        //    return Ok(data);
+        //}
     }
 }

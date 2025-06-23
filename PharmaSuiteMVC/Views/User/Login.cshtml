@@ -1,0 +1,19 @@
+﻿@model PharmaSuiteMVC.Models.User
+@{
+    ViewData["Title"] = "Login";
+}
+<div class="container mt-5">
+    <h2>Login</h2>
+    <form asp-controller="User" asp-action="Login" method="post">
+        <div class="mb-3">
+            <label>Username</label>
+            <input asp-for="Username" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label>Password</label>
+            <input asp-for="Password" type="password" class="form-control" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+    <p class="text-danger mt-2">@ViewBag.Message</p>
+</div>
