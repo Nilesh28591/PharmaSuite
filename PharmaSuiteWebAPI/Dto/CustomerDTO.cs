@@ -7,7 +7,7 @@ namespace PharmaSuiteWebAPI.Dto
         public string Name { get; set; }
 
         [MaxLength(20)]
-        public string Phone { get; set; }
+        public string Mobile { get; set; }  // Use Mobile to match your model
 
         public string Address { get; set; }
 

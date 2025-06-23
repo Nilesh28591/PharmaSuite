@@ -12,8 +12,8 @@ using PharmaSuiteWebAPI.Data;
 namespace PharmaSuiteWebAPI.Migrations
 {
     [DbContext(typeof(PharmaSuiteDBContext))]
-    [Migration("20250623030234_pharmasuitemedicinepurchase")]
-    partial class pharmasuitemedicinepurchase
+    [Migration("20250623054246_123")]
+    partial class _123
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -76,6 +76,12 @@ namespace PharmaSuiteWebAPI.Migrations
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsOnline")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Mobile")
                         .IsRequired()

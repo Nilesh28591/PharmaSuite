@@ -12,4 +12,5 @@ namespace PharmaSuiteWebAPI.Repo
         Task UpdateCustomerAsync(Customer customer);
         Task DeleteCustomerAsync(int id);
     }
+
 }

@@ -18,7 +18,8 @@ $(document).ready(function () {
             CustomerId: $('#CustomerId').val() || 0,
             Name: $('#Name').val(),
             Mobile: $('#Mobile').val(),
-            Address: $('#Address').val()
+            Address: $('#Address').val(),
+            Email: $('#Email').val() // ✅ added
         };
 
         if (customer.CustomerId == 0 || customer.CustomerId === "") {
@@ -71,6 +72,7 @@ function loadCustomers() {
                     <td>${cust.name}</td>
                     <td>${cust.mobile}</td>
                     <td>${cust.address}</td>
+                    <td>${cust.email}</td> <!-- ✅ added -->
                     <td>
                         <button class="btn btn-warning btn-sm" onclick="editCustomer(${cust.customerId})">Edit</button>
                         <button class="btn btn-danger btn-sm" onclick="deleteCustomer(${cust.customerId})">Delete</button>
@@ -90,6 +92,7 @@ function clearForm() {
     $('#Name').val('');
     $('#Mobile').val('');
     $('#Address').val('');
+    $('#Email').val(''); // ✅ added
 }
 
 function editCustomer(id) {
@@ -101,6 +104,7 @@ function editCustomer(id) {
             $('#Name').val(cust.name);
             $('#Mobile').val(cust.mobile);
             $('#Address').val(cust.address);
+            $('#Email').val(cust.email); // ✅ added
             $('#customerModalLabel').text('Edit Customer');
             customerModal.show();
         },

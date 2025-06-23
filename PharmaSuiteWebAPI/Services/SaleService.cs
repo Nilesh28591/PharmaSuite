@@ -169,13 +169,14 @@ namespace PharmaSuiteWebAPI.Services
             var data = new Customer()
             {
                 Name = dto.Name,
-                Phone = dto.Phone,
+                Mobile = dto.Mobile,    // use Mobile to match Model
                 Email = dto.Email,
                 Address = dto.Address
             };
             db.Customers.Add(data);
             db.SaveChanges();
-        }   
+        }
+
 
     }
 }

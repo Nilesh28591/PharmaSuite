@@ -53,13 +53,13 @@ namespace PharmaSuiteMVC.Controllers
         [HttpPost]
         public IActionResult Add([FromBody] Customer customer)
         {
-            // API expects CustomerCreateDTO - no CustomerId, CreatedBy passed here
             var dto = new
             {
                 Name = customer.Name,
                 Mobile = customer.Mobile,
                 Address = customer.Address,
-                CreatedBy = "admin"  // you can change as per your auth system
+                Email = customer.Email,                 // ✅ newly added
+                CreatedBy = "admin"
             };
 
             var json = JsonConvert.SerializeObject(dto);
@@ -76,18 +76,17 @@ namespace PharmaSuiteMVC.Controllers
         [HttpPut]
         public IActionResult Update([FromBody] Customer customer)
         {
-            // API expects CustomerUpdateDTO without id in body, but id in route
             var dto = new
             {
                 Name = customer.Name,
                 Mobile = customer.Mobile,
                 Address = customer.Address,
-                UpdatedBy = "admin" // change if you have user info
+                Email = customer.Email,                 // ✅ newly added
+                UpdatedBy = "admin"
             };
 
             var json = JsonConvert.SerializeObject(dto);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-
             HttpResponseMessage response = client.PutAsync($"{apiUrl}/EditCustomer/{customer.CustomerId}", content).Result;
 
             if (response.IsSuccessStatusCode)

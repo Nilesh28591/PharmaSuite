@@ -4,6 +4,9 @@ using PharmaSuiteWebAPI.Dto;
 using PharmaSuiteWebAPI.DTO;
 using PharmaSuiteWebAPI.Model;
 using PharmaSuiteWebAPI.Repo;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PharmaSuiteWebAPI.Controllers
 {
@@ -26,6 +29,8 @@ namespace PharmaSuiteWebAPI.Controllers
                 Name = dto.Name,
                 Mobile = dto.Mobile,
                 Address = dto.Address,
+                Email = dto.Email,           // Included Email
+                IsOnline = dto.IsOnline,     // Included IsOnline
                 CreatedBy = dto.CreatedBy,
                 CreatedAt = DateTime.Now
             };
@@ -45,6 +50,8 @@ namespace PharmaSuiteWebAPI.Controllers
                 Name = c.Name,
                 Mobile = c.Mobile,
                 Address = c.Address,
+                Email = c.Email,           // Included Email
+                IsOnline = c.IsOnline,     // Included IsOnline
                 CreatedAt = c.CreatedAt,
                 CreatedBy = c.CreatedBy,
                 UpdatedAt = c.UpdatedAt,
@@ -68,6 +75,8 @@ namespace PharmaSuiteWebAPI.Controllers
                 Name = c.Name,
                 Mobile = c.Mobile,
                 Address = c.Address,
+                Email = c.Email,           // Included Email
+                IsOnline = c.IsOnline,     // Included IsOnline
                 CreatedAt = c.CreatedAt,
                 CreatedBy = c.CreatedBy,
                 UpdatedAt = c.UpdatedAt,
@@ -88,6 +97,8 @@ namespace PharmaSuiteWebAPI.Controllers
             c.Name = dto.Name;
             c.Mobile = dto.Mobile;
             c.Address = dto.Address;
+            c.Email = dto.Email;           // Included Email
+            c.IsOnline = dto.IsOnline;     // Included IsOnline
             c.UpdatedBy = dto.UpdatedBy;
             c.UpdatedAt = DateTime.Now;
 
