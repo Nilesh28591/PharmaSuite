@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using PharmaSuite.Repositories;
 using PharmaSuiteWebAPI.Data;
 using PharmaSuiteWebAPI.Repo;
 using PharmaSuiteWebAPI.Services;
@@ -36,6 +37,9 @@ builder.Services.AddScoped<ISupplierRepo, SupplierService>();
 builder.Services.AddAutoMapper(typeof(MappingData));
 builder.Services.AddScoped<ICustomerRepo, CustomerService>();
 
+
+builder.Services.AddScoped<IExpenseRepository, ExpenseRepository>();
+builder.Services.AddScoped<IExpenseService, ExpenseService>();
 
 
 var app = builder.Build();

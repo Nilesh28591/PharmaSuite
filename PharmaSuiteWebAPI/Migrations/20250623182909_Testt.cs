@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PharmaSuiteWebAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class _123 : Migration
+    public partial class Testt : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,6 +30,21 @@ namespace PharmaSuiteWebAPI.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Customers", x => x.CustomerId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Expenses",
+                columns: table => new
+                {
+                    ExpenseId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Category = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Expenses", x => x.ExpenseId);
                 });
 
             migrationBuilder.CreateTable(
@@ -268,6 +283,9 @@ namespace PharmaSuiteWebAPI.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Expenses");
+
             migrationBuilder.DropTable(
                 name: "Medicine_categories");
 

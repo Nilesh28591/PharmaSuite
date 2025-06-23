@@ -10,6 +10,8 @@ namespace PharmaSuiteWebAPI.Data
         {
             CreateMap<PurchaseDTO, Purchase>();
             CreateMap<PurchaseItemDTO, PurchaseItem>();
+
+            CreateMap<ExpenseDto, Expense>().ReverseMap();
             // From Entity to DTO (for Get/Read)
             CreateMap<Purchase, PurchaseDTO>() // Model -> DTO
                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Supplier.Name))

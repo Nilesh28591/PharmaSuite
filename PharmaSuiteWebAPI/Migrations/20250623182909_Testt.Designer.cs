@@ -12,8 +12,8 @@ using PharmaSuiteWebAPI.Data;
 namespace PharmaSuiteWebAPI.Migrations
 {
     [DbContext(typeof(PharmaSuiteDBContext))]
-    [Migration("20250623054246_123")]
-    partial class _123
+    [Migration("20250623182909_Testt")]
+    partial class Testt
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -100,6 +100,29 @@ namespace PharmaSuiteWebAPI.Migrations
                     b.HasKey("CustomerId");
 
                     b.ToTable("Customers");
+                });
+
+            modelBuilder.Entity("PharmaSuiteWebAPI.Model.Expense", b =>
+                {
+                    b.Property<int>("ExpenseId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExpenseId"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ExpenseId");
+
+                    b.ToTable("Expenses");
                 });
 
             modelBuilder.Entity("PharmaSuiteWebAPI.Model.Manifacturer_Medicine", b =>
