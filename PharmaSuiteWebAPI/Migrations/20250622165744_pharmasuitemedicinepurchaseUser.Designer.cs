@@ -12,8 +12,8 @@ using PharmaSuiteWebAPI.Data;
 namespace PharmaSuiteWebAPI.Migrations
 {
     [DbContext(typeof(PharmaSuiteDBContext))]
-    [Migration("20250614184751_pharmasuitemedicinepurchasess")]
-    partial class pharmasuitemedicinepurchasess
+    [Migration("20250622165744_pharmasuitemedicinepurchaseUser")]
+    partial class pharmasuitemedicinepurchaseUser
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -268,6 +268,34 @@ namespace PharmaSuiteWebAPI.Migrations
                     b.HasKey("SupplierId");
 
                     b.ToTable("supplier");
+                });
+
+            modelBuilder.Entity("PharmaSuiteWebAPI.Model.User", b =>
+                {
+                    b.Property<int>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("users");
                 });
 
             modelBuilder.Entity("PharmaSuiteWebAPI.Model.Purchase", b =>

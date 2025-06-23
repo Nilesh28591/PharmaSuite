@@ -23,7 +23,7 @@ namespace PharmaSuiteWebAPI.Controllers
         public IActionResult stockAlert() 
         {
             int lowStockCount = db.purchaseItem
-                      .Where(x => x.Quantity <= x.MinQuantity)
+                      .Where(x => x.Quantity <= x.Quantity)
                       .Count();
             return Ok(lowStockCount);
         }
@@ -51,7 +51,7 @@ namespace PharmaSuiteWebAPI.Controllers
         [Route("StockAlertTable")]
         public IActionResult stockAlertTable()
         {
-            var lowStockCount = db.purchaseItem.Where(x => x.Quantity <= x.MinQuantity).Include(x=>x.Medicine).Select(x=> new PurchaseItemDtoSF() 
+            var lowStockCount = db.purchaseItem.Where(x => x.Quantity <= x.Quantity).Include(x=>x.Medicine).Select(x=> new PurchaseItemDtoSF() 
             {
                 PurchaseItemId = x.PurchaseItemId,
                 MedicineId = x.MedicineId,
@@ -61,7 +61,7 @@ namespace PharmaSuiteWebAPI.Controllers
                 ExpiryDate = x.ExpiryDate,
                 Quantity = x.Quantity,
                 CostPrice = x.CostPrice,
-                MinQuantity = x.MinQuantity
+                MinQuantity = x.Quantity
 
             }).ToList();
             return Ok(lowStockCount);

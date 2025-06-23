@@ -1,0 +1,128 @@
+﻿@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+
+@{
+    ViewData["Title"] = "All Purchases";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2 class="mt-4">All Purchases</h2>
+<button class="btn btn-success mt-3 mb-3" data-bs-toggle="modal" data-bs-target="#addPurchaseModal">
+    <i class="bi bi-plus-circle"></i> Add Purchase
+</button>
+
+<!-- Table -->
+<div class="table-responsive">
+    <table class="table table-hover table-bordered table-sm align-middle" id="purchaseTable">
+        <thead class="table-dark">
+            <tr>
+                <th>Purchase ID</th>
+                <th>Supplier Name</th>
+                <th>Invoice No</th>
+                <th>Date</th>
+                <th>Items</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody><!-- Will be populated by JS --></tbody>
+    </table>
+</div>
+
+<!-- Add Purchase Modal -->
+<div class="modal fade" id="addPurchaseModal" tabindex="-1" aria-labelledby="addPurchaseModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content p-3">
+            <form id="purchaseForm">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Purchase</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <!-- SUPPLIER SELECTION -->
+                        <div class="col-md-3">
+                            <label for="supplierId" class="form-label">Supplier</label>
+                            <select class="form-select" id="supplierId" required></select>
+                        </div>
+                        <div class="col-md-3">
+                            <label>Email</label>
+                            <input id="supplierEmail" class="form-control" readonly />
+                        </div>
+                        <div class="col-md-3">
+                            <label>Contact Person</label>
+                            <input id="supplierContactPerson" class="form-control" readonly />
+                        </div>
+                        <div class="col-md-3">
+                            <label>Phone</label>
+                            <input id="supplierPhone" class="form-control" readonly />
+                        </div>
+                        <div class="col-md-3">
+                            <label>Address</label>
+                            <input id="supplierAddress" class="form-control" readonly />
+                        </div>
+
+                        <!-- GENERAL FIELDS -->
+                        <div class="col-md-3">
+                            <label for="invoiceNumber" class="form-label">Invoice Number</label>
+                            <input type="text" class="form-control" id="invoiceNumber" required />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="createdBy" class="form-label">Created By</label>
+                            <input type="text" class="form-control" id="createdBy" required />
+                        </div>
+
+                        <div class="col-12 mt-3">
+                            <h5>Add Purchase Item</h5>
+                        </div>
+
+                        <!-- MEDICINE SELECTION -->
+                        <div class="col-md-3">
+                            <label>Medicine</label>
+                            <select class="form-select" id="medicineId" required></select>
+                        </div>
+                        <div class="col-md-3">
+                            <label>Category</label>
+                            <input id="medicineCategory" class="form-control" readonly />
+                        </div>
+                        <div class="col-md-3">
+                            <label>Manufacturer</label>
+                            <input id="medicineManufacturer" class="form-control" readonly />
+                        </div>
+                        <div class="col-md-3">
+                            <label>Price Per Unit</label>
+                            <input id="medicinePrice" class="form-control" readonly />
+                        </div>
+                        <div class="col-md-3">
+                            <label>Batch No</label>
+                            <input id="batchNo" class="form-control" />
+                        </div>
+                        <div class="col-md-3">
+                            <label>Quantity</label>
+                            <input id="quantity" class="form-control" required />
+                        </div>
+                        <div class="col-md-3">
+                            <label>Cost Price</label>
+                            <input id="costPrice" class="form-control" step="0.01" required />
+                        </div>
+                        <div class="col-md-3">
+                            <label>Expiry Date</label>
+                            <input id="expiryDate" class="form-control" readonly />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Save Purchase</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+@section Scripts {
+    <script>
+        const apiBaseUrl = '@Configuration["ApiSettings:BaseUrl"]';
+    </script>
+    <script src="~/js/purchase.js"></script>
+    
+}

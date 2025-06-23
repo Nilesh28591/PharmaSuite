@@ -7,7 +7,14 @@ namespace PharmaSuiteWebAPI.Repo
     {
         Task AddPurchasAsyc(PurchaseDTO purchasedto);
         Task<List<PurchaseDTO>> GetAllPurchas();
+        Task<IEnumerable<Supplier>> GetAllSupplier();
 
-        Task<List<MedicineStockDTO>> GelAllMedicineStockAsync();
+        Task<List<Medicine_Management>> GelAllMedicineStockAsync();
+
+        Task<PurchaseDTO> GetPurchaseById(int id);
+
+        Task EditPurchase(int id,PurchaseDTO purchasedto);
+
+        Task DeletePurchaseAsync(int id);
     }
 }

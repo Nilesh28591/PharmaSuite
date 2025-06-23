@@ -11,16 +11,19 @@ namespace PharmaSuiteMVC.Controllers
     public class MedicineController : Controller
     {
         HttpClient client;
-        public MedicineController() 
+        private readonly string? _baseUrl;
+        public MedicineController(IConfiguration config) 
         {
             HttpClientHandler handler = new HttpClientHandler();
             handler.ServerCertificateCustomValidationCallback = (SslPolicyErrors, chain, cert, sender) => { return true; };
             client = new HttpClient(handler);
+            _baseUrl = config["ApiSettings:BaseUrl"];
+          
         }
         public IActionResult Report()
         {
             List<PurchaseItemDto> meds = new List<PurchaseItemDto>();
-            string url = "https://localhost:7259/api/Medicine/StockAlert";
+            string url = $"{_baseUrl}/api/Medicine/StockAlert";
             HttpResponseMessage response = client.GetAsync(url).Result;
             if (response.IsSuccessStatusCode)
             {
@@ -30,7 +33,7 @@ namespace PharmaSuiteMVC.Controllers
             }
 
             List<PurchaseItemDto> exp = new List<PurchaseItemDto>();
-            string url2 = "https://localhost:7259/api/Medicine/ExpAlert";
+            string url2 = $"{_baseUrl}/api/Medicine/ExpAlert";
             HttpResponseMessage response2 = client.GetAsync(url2).Result;
             if (response2.IsSuccessStatusCode)
             {
@@ -40,7 +43,7 @@ namespace PharmaSuiteMVC.Controllers
             }
 
             List<PurchaseItemDto> exp_alert = new List<PurchaseItemDto>();
-            string url3 = "https://localhost:7259/api/Medicine/PriorExpAlert";
+            string url3 = $"{_baseUrl}/api/Medicine/PriorExpAlert";
             HttpResponseMessage response3 = client.GetAsync(url3).Result;
             if (response3.IsSuccessStatusCode)
             {
@@ -50,7 +53,7 @@ namespace PharmaSuiteMVC.Controllers
             }
 
             List<PurchaseItemDto> Stock_alert_table = new List<PurchaseItemDto>();
-            string url4 = "https://localhost:7259/api/Medicine/StockAlertTable/";
+            string url4 = $"{_baseUrl}/api/Medicine/StockAlertTable/";
             HttpResponseMessage response4 = client.GetAsync(url4).Result;
             if (response4.IsSuccessStatusCode)
             {
@@ -60,7 +63,7 @@ namespace PharmaSuiteMVC.Controllers
             }
 
             List<PurchaseItemDto> exp_alert_table = new List<PurchaseItemDto>();
-            string url5 = "https://localhost:7259/api/Medicine/ExpAlertTable/";
+            string url5 = $"{_baseUrl}/api/Medicine/ExpAlertTable/";
             HttpResponseMessage response5 = client.GetAsync(url5).Result;
             if (response5.IsSuccessStatusCode)
             {
@@ -70,7 +73,7 @@ namespace PharmaSuiteMVC.Controllers
             }
 
             List<PurchaseItemDto> prior_exp_alert_table = new List<PurchaseItemDto>();
-            string url6 = "https://localhost:7259/api/Medicine/PriorExpAlertTable/";
+            string url6 = $"{_baseUrl}/api/Medicine/PriorExpAlertTable/";
             HttpResponseMessage response6 = client.GetAsync(url6).Result;
             if (response6.IsSuccessStatusCode)
             {
@@ -81,12 +84,12 @@ namespace PharmaSuiteMVC.Controllers
 
 
             return View();
-        }
+        } 
 
         public IActionResult Index()
         {
             List<Medicine_Management> meds = new List<Medicine_Management>();
-            string url = "https://localhost:7290/api/Medicine_Management/Fetch/";
+            string url = $"{_baseUrl}/api/Medicine_Management/Fetch/";
             HttpResponseMessage response = client.GetAsync(url).Result;
             if (response.IsSuccessStatusCode)
             {
@@ -104,7 +107,7 @@ namespace PharmaSuiteMVC.Controllers
         public IActionResult Add_Medicine()
         {
             List<Category_Dto> cat = new List<Category_Dto>();
-            string url = "https://localhost:7290/api/Medicine_Management/FetchCat/";
+            string url = $"{_baseUrl}/api/Medicine_Management/FetchCat/";
             HttpResponseMessage response = client.GetAsync(url).Result;
             if (response.IsSuccessStatusCode)
             {
@@ -119,7 +122,7 @@ namespace PharmaSuiteMVC.Controllers
 
 
             List<Manifacture_Dto> mfg = new List<Manifacture_Dto>();
-            string url2 = "https://localhost:7290/api/Medicine_Management/FetchMfg/";
+            string url2 = $"{_baseUrl}/api/Medicine_Management/FetchMfg/";
             HttpResponseMessage response2 = client.GetAsync(url2).Result;
             if (response2.IsSuccessStatusCode)
             {
@@ -138,7 +141,7 @@ namespace PharmaSuiteMVC.Controllers
         [HttpPost]
         public IActionResult Add_Medicine(Medicine_Management meds)
         {
-            string url = "https://localhost:7290/api/Medicine_Management/Add/";
+            string url = $"{_baseUrl}/api/Medicine_Management/Add/";
             var json = JsonConvert.SerializeObject(meds);
             StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
             HttpResponseMessage response = client.PostAsync(url, content).Result;
@@ -153,7 +156,7 @@ namespace PharmaSuiteMVC.Controllers
         public IActionResult Delete_Medicine(int id)
         {
             Medicine_Management meds = new Medicine_Management();
-            string url = "https://localhost:7290/api/Medicine_Management/Delete/";
+            string url = $"{_baseUrl}/api/Medicine_Management/Delete/";
             HttpResponseMessage response = client.DeleteAsync(url + id).Result;
             if (response.IsSuccessStatusCode)
             {
@@ -165,7 +168,7 @@ namespace PharmaSuiteMVC.Controllers
         public IActionResult Edit_Medicine(int id)
         {
             List<Category_Dto> cat = new List<Category_Dto>();
-            string url = "https://localhost:7290/api/Medicine_Management/FetchCat/";
+            string url = $"{_baseUrl}/api/Medicine_Management/FetchCat/";
             HttpResponseMessage response = client.GetAsync(url).Result;
             if (response.IsSuccessStatusCode)
             {
@@ -180,7 +183,7 @@ namespace PharmaSuiteMVC.Controllers
 
 
             List<Manifacture_Dto> mfg = new List<Manifacture_Dto>();
-            string url2 = "https://localhost:7290/api/Medicine_Management/FetchMfg/";
+            string url2 = $"{_baseUrl}/api/Medicine_Management/FetchMfg/";
             HttpResponseMessage response2 = client.GetAsync(url2).Result;
             if (response2.IsSuccessStatusCode)
             {
@@ -194,7 +197,7 @@ namespace PharmaSuiteMVC.Controllers
 
             }
             Medicine_Management meds = new Medicine_Management();
-            string url3 = "https://localhost:7290/api/Medicine_Management/Edit/";
+            string url3 = $"{_baseUrl}/api/Medicine_Management/Edit/";
             HttpResponseMessage response3 = client.GetAsync(url3 + id).Result;
             if (response3.IsSuccessStatusCode)
             {
@@ -211,7 +214,7 @@ namespace PharmaSuiteMVC.Controllers
         [HttpPost]
         public IActionResult Edit_Medicine(Medicine_Management meds)
         {
-            string url = "https://localhost:7290/api/Medicine_Management/PostEdit/";
+            string url = $"{_baseUrl}/api/Medicine_Management/PostEdit/";
             var json = JsonConvert.SerializeObject(meds);
             StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
             HttpResponseMessage response = client.PutAsync(url, content).Result;
@@ -230,7 +233,7 @@ namespace PharmaSuiteMVC.Controllers
         [HttpPost]
         public IActionResult Add_Cat(CategoryDto_Add dto)
         {
-            string url = "https://localhost:7290/api/Medicine_Management/AddCat/";
+            string url = $"{_baseUrl}/api/Medicine_Management/AddCat/";
             var json = JsonConvert.SerializeObject(dto);
             StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
             HttpResponseMessage response = client.PostAsync(url, content).Result;
@@ -254,7 +257,7 @@ namespace PharmaSuiteMVC.Controllers
         [HttpPost]
         public IActionResult Add_Mfg(Manifacture_Dto_add add)
         {
-            string url = "https://localhost:7290/api/Medicine_Management/AddMfg/";
+            string url = $"{_baseUrl}/api/Medicine_Management/AddMfg/";
             var json = JsonConvert.SerializeObject(add);
             StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
             HttpResponseMessage response = client.PostAsync(url, content).Result;

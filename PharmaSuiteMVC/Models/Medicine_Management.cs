@@ -6,7 +6,7 @@
         public string name { get; set; }
         public string category { get; set; }
         public string manufacturer { get; set; }
-        public int pricePerUnit { get; set; }
+        public decimal pricePerUnit { get; set; }
         public string BatchNo { get; set; }
         public DateTime expiryDate { get; set; }
     }

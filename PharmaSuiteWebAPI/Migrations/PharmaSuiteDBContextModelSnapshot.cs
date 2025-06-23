@@ -267,6 +267,34 @@ namespace PharmaSuiteWebAPI.Migrations
                     b.ToTable("supplier");
                 });
 
+            modelBuilder.Entity("PharmaSuiteWebAPI.Model.User", b =>
+                {
+                    b.Property<int>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("users");
+                });
+
             modelBuilder.Entity("PharmaSuiteWebAPI.Model.Purchase", b =>
                 {
                     b.HasOne("PharmaSuiteWebAPI.Model.Supplier", "Supplier")

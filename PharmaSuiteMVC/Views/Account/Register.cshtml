@@ -1,0 +1,45 @@
+﻿@model RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <div class="card shadow">
+                <div class="card-body p-4">
+                    <h3 class="text-center text-primary">Register</h3>
+                    <form method="post">
+                        <div class="mb-3">
+                            <label class="form-label">Username</label>
+                            <input asp-for="Username" class="form-control" placeholder="Enter a username" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input asp-for="Password" class="form-control" type="password" placeholder="Enter a password" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Role</label>
+                            <select asp-for="Role" class="form-select">
+                                <option>Admin</option>
+                                <option>Pharmacist</option>
+                                <option>Cashier</option>
+                            </select>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Register</button>
+                        </div>
+                    </form>
+                    <div class="text-center mt-3">
+                        <a href="/Account/Login">Already have an account? Login here</a>
+                    </div>
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger mt-3">
+                            Registration failed. Try a different username.
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

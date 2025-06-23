@@ -1,0 +1,46 @@
+﻿<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/bootstrap.bundle.min.js"></script>
+@model RegisterViewModel
+<form id="registerForm" method="post">
+    <div class="mb-3">
+        <label class="form-label">Username</label>
+        <input asp-for="Username" class="form-control" placeholder="Enter a username" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input asp-for="Password" class="form-control" placeholder="Enter a password" type="password" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Role</label>
+        <select asp-for="Role" class="form-select">
+            <option>Admin</option>
+            <option>Pharmacist</option>
+            <option>Cashier</option>
+        </select>
+    </div>
+    <div id="registerError" class="text-danger"></div>
+    <div class="d-grid">
+        <button type="submit" class="btn btn-primary">Register</button>
+    </div>
+</form>
+
+<script>
+    $(function(){
+        $("#registerForm").submit(function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/Account/Register',
+                method: 'POST',
+                data: $(this).serialize(),
+                success: function (response) {
+                    if (response.success) {
+                        alert("Registration successful! You can now login.");
+                        $("#registerModal").modal("hide");
+                    } else {
+                        $("#registerModalBody").html(response);
+                    }
+                }
+            });
+        });
+    });
+</script>

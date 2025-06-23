@@ -15,6 +15,7 @@ namespace PharmaSuiteWebAPI.Data
         public DbSet<Medicine_Management> Medicine_Managements { get; set; }
         public DbSet<Category> Medicine_categories { get; set; }
         public DbSet<Manifacturer_Medicine> Medicine_Manifacturer { get; set; }
+        public DbSet<User> users { get; set; }  
 
     }
 }

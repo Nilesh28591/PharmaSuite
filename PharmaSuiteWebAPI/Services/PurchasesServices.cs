@@ -37,6 +37,51 @@ namespace PharmaSuiteWebAPI.Services
             await _Context.SaveChangesAsync();
         }
 
+        public async Task DeletePurchaseAsync(int id)
+        {
+            var existingPurchase = await _Context.purchase
+        .Include(p => p.Items)
+        .FirstOrDefaultAsync(p => p.PurchaseId == id);
+
+            if (existingPurchase == null)
+                throw new Exception($"Purchase with Id {id} not found");
+
+            // Remove associated items
+            _Context.purchaseItem.RemoveRange(existingPurchase.Items);
+            _Context.purchase.Remove(existingPurchase);
+
+            await _Context.SaveChangesAsync();
+        }
+
+        public async Task EditPurchase(int id, PurchaseDTO purchasedto)
+        {
+            var data = await _Context.purchase
+         .Include(p => p.Items)
+         .FirstOrDefaultAsync(p => p.PurchaseId == id);
+
+
+            // Update scalar fields
+            data.SupplierId = purchasedto.SupplierId;
+            data.InvoiceNumber = purchasedto.InvoiceNumber;
+            data.ModifiedBy = purchasedto.CreatedBy;
+            data.ModifiedAt = DateTime.Now;
+
+            // Remove existing items
+            _Context.purchaseItem.RemoveRange(data.Items);
+
+            // Add new items
+            data.Items = purchasedto.Items.Select(i =>
+            {
+                var item = _mapper.Map<PurchaseItem>(i);
+                item.CreatedAt = DateTime.Now;
+                item.ModifiedBy = purchasedto.CreatedBy;
+                item.ModifiedAt = DateTime.Now;
+                return item;
+            }).ToList();
+
+            await _Context.SaveChangesAsync();
+        }
+
         public async Task<List<Medicine_Management>> GelAllMedicineStockAsync()
         {
             var data= await _Context.Medicine_Managements.ToListAsync();
@@ -58,6 +103,16 @@ namespace PharmaSuiteWebAPI.Services
         {
             var data = await _Context.supplier.ToListAsync();
             return data;
+        }
+
+        public async Task<PurchaseDTO> GetPurchaseById(int id)
+        {
+           var data=await _Context.purchase.Include(x=>x.Supplier).Include(x=>x.Items).ThenInclude(x=>x.Medicine).FirstOrDefaultAsync(x=>x.PurchaseId==id);
+            if (data == null)
+            {
+                return null;
+            }
+            return _mapper.Map<PurchaseDTO>(data);
         }
     }
 }
