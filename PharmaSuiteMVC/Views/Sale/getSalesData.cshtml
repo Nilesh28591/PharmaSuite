@@ -1,0 +1,127 @@
+﻿@model List<SaleDTO>
+
+<style>
+    body {
+        background-color: #f4f6f9;
+    }
+
+    h2 {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .date-section {
+        margin-top: 30px;
+    }
+
+    .invoice-btn {
+        padding: 4px 12px;
+        font-size: 0.875rem;
+    }
+</style>
+
+
+<div class="container mt-5">
+    <h2 class="text-center">💊 Sales Dashboard </h2>
+    <!-- 📅 Date Group Start -->
+    <div class="date-section">
+
+        <table class="table table-bordered table-striped">
+            <thead class="table-light">
+                <tr>
+                    <th>Sale Id</th>
+                    <th>Customer Name</th>
+                    <th>Total Amount (₹)</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.SaleId</td>
+                        <td>@item.CustomerName</td>
+                        <td>@item.TotalAmount</td>
+                        <td>
+                            <a id="clicktoseedetails" class="btn btn-primary view-items-btn" data-saleid="@item.SaleId">View Items</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="saleItemsModal" tabindex="-1" aria-labelledby="saleItemsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="saleItemsModalLabel">📦 Sale Item Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <table class="table table-bordered table-striped text-center" id="saleItemsTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Item ID</th>
+                                <th>Sale ID</th>
+                                <th>Medicine ID</th>
+                                <th>Medicine Name</th>
+                                <th>Quantity</th>
+                                <th>Unit Price (₹)</th>
+                                <th>Discount (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="saleItemsTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="~/lib/jquery/dist/jquery.min.map">~/lib/jquery/dist/jquery.min.map</a>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+
+
+    <script>
+
+        $(document).ready(function () {
+             $('.view-items-btn').on('click', function (e) {
+
+
+        const saleId = $(this).data('saleid');
+
+
+                $.ajax({
+                   url: `/Sale/getSaleItems/${saleId}`,
+                    type: 'GET',
+                    contentType: 'application/json;charset=utf-8',
+                    dataType: 'json',
+                    success: function (result,status,xhr) {
+                        let rows = '';
+                        $.each(result, function (i, item) {
+                            rows += '<tr>';
+                            rows += `<td>${item.itemId}</td>`;
+                            rows += `<td>${item.saleId}</td>`;
+                            rows += `<td>${item.medicineId}</td>`;
+                             rows += `<td>${item.name}</td>`;
+                            rows += `<td>${item.quantity}</td>`;
+                            rows += `<td>${item.unitPrice}</td>`;
+                            rows += `<td>${item.discount}</td>`;
+                            rows += '</tr>';
+                        });
+                         $('#saleItemsModal').modal('show');
+                        $('#saleItemsTableBody').html(rows);
+                    },
+                    error: function () {
+                        alert("Failed to fetch sale items.");
+                    }
+                });
+            });
+        });
+
+    </script>
+

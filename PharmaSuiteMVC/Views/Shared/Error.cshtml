@@ -1,4 +1,4 @@
-﻿@model ErrorViewModel
+﻿@* @model ErrorViewModel
 @{
     ViewData["Title"] = "Error";
 }
@@ -23,3 +23,21 @@
     For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
     and restarting the app.
 </p>
+ *@
+
+
+
+
+ @{
+    ViewData["Title"] = "Error";
+    var errorMessage = ViewData["ErrorMessage"] as string;
+}
+
+<style>
+    h1{
+        color: red;
+    }
+</style>
+
+<h2>Oops Something Went Wrong</h2> 
+<p>@errorMessage</p>

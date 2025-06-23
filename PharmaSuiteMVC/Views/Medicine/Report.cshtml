@@ -1,126 +1,366 @@
-﻿<h2>Low Stock Alert</h2>
+﻿<div>
+	<div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+		<div class="card-header">Stock Alert</div>
+		<div class="card-body">
+			<h5 class="card-title">Low Stock Items</h5>
+			<p class="card-text" style="font-size: 24px; font-weight: bold;">
+				@ViewBag.Count
+			</p>
+		</div>
+	</div>
 
-<div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
-	<div class="card-header">Stock Alert</div>
-	<div class="card-body">
-		<h5 class="card-title">Low Stock Items</h5>
-		<p class="card-text" style="font-size: 24px; font-weight: bold;">
-			@ViewBag.Count
-		</p>
+	<div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+		<div class="card-header">Sales</div>
+		<div class="card-body">
+			<h5 class="card-title">Total Sales</h5>
+			<p class="card-text" style="font-size: 24px; font-weight: bold;">
+				@ViewBag.SumSale
+			</p>
+		</div>
+	</div>
+
+	<div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+		<div class="card-header">Stock Alert</div>
+		<div class="card-body">
+			<h5 class="card-title">Total Medicine</h5>
+			<p class="card-text" style="font-size: 24px; font-weight: bold;">
+				@ViewBag.SumSaleMeds
+			</p>
+		</div>
+	</div>
+
+	<div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+		<div class="card-header">Stock Alert</div>
+		<div class="card-body">
+			<h5 class="card-title"> expired Items</h5>
+			<p class="card-text" style="font-size: 24px; font-weight: bold;">
+				@ViewBag.Exp
+			</p>
+		</div>
+	</div>
+
+	<div class="card text-white bg-warning mb-3" style="max-width: 18rem;">
+		<div class="card-header">Stock Alert</div>
+		<div class="card-body">
+			<h5 class="card-title"> Yet to  expire Items</h5>
+			<p class="card-text" style="font-size: 24px; font-weight: bold;">
+				@ViewBag.ExpAlert
+			</p>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="container mt-5">
+	<div class="card shadow-lg rounded">
+		<div class="card-header bg-primary text-white text-center">
+			<h3 class="mb-0">🚨 Todays SalescSummary 🚨</h3>
+		</div>
+		<div class="card-body">
+			<table class="table table-bordered table-hover text-center align-middle">
+				<thead class="table-dark">
+					<tr>
+						@* <th scope="col">ID</th> *@
+						<th scope="col">CustomerName</th>
+						<th scope="col">ItemName</th>
+						<th scope="col">SaleDate</th>
+						<th scope="col">Quantity</th>
+						<th scope="col">Discount</th>
+						<th scope="col">TotalAmount</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var i in ViewBag.TotalSaleToday)
+					{
+						<tr class="table-primary">
+							@* <th scope="row">@i.PurchaseItemId</th> *@
+							<td>@i.CustomerName</td>
+							<td>@i.MedicineName</td>
+							<td>@i.SaleDate.ToString("dd-MM-yyyy")</td>
+							<td>@i.Quantity</td>
+							<td>@i.Discount</td>
+							<td class="fw-bold">@i.TotalAmount</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<div class="container mt-5">
+	<div class="card shadow-lg rounded">
+		<div class="card-header bg-danger text-white text-center">
+			<h3 class="mb-0">🚨 Stock Alert 🚨</h3>
+		</div>
+		<div class="card-body">
+			<table class="table table-bordered table-hover text-center align-middle">
+				<thead class="table-dark">
+					<tr>
+						<th scope="col">ID</th>
+						<th scope="col">Medicine</th>
+						<th scope="col">Batch No</th>
+						<th scope="col">Mfg Date</th>
+						<th scope="col">Expiry Date</th>
+						<th scope="col">Quantity</th>
+						<th scope="col">Min Quantity</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var i in ViewBag.StockAlertTable)
+					{
+						<tr class="table-warning">
+							<th scope="row">@i.PurchaseItemId</th>
+							<td>@i.MedicineName</td>
+							<td>@i.BatchNo</td>
+							<td>@i.MfgDate.ToString("dd-MM-yyyy")</td>
+							<td>@i.ExpiryDate.ToString("dd-MM-yyyy")</td>
+							<td>@i.Quantity</td>
+							<td class="text-danger fw-bold">@i.MinQuantity</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
 	</div>
 </div>
 
-<div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
-	<div class="card-header">Stock Alert</div>
-	<div class="card-body">
-		<h5 class="card-title"> expired Items</h5>
-		<p class="card-text" style="font-size: 24px; font-weight: bold;">
-			@ViewBag.Exp
-		</p>
+
+<div class="container mt-5">
+	<div class="card shadow-lg rounded">
+		<div class="card-header bg-warning text-dark text-center">
+			<h3 class="mb-0">⏳ Expiry Alert ⏳</h3>
+		</div>
+		<div class="card-body">
+			<table class="table table-bordered table-hover text-center align-middle">
+				<thead class="table-dark">
+					<tr>
+						<th scope="col">ID</th>
+						<th scope="col">Medicine</th>
+						<th scope="col">Batch No</th>
+						<th scope="col">Mfg Date</th>
+						<th scope="col">Expiry Date</th>
+						<th scope="col">Quantity</th>
+						<th scope="col">Min Quantity</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var i in ViewBag.expAlertTable)
+					{
+						<tr class="table-danger">
+							<th scope="row">@i.PurchaseItemId</th>
+							<td>@i.MedicineName</td>
+							<td>@i.BatchNo</td>
+							<td>@i.MfgDate.ToString("dd-MM-yyyy")</td>
+							<td class="fw-bold text-danger">@i.ExpiryDate.ToString("dd-MM-yyyy")</td>
+							<td>@i.Quantity</td>
+							<td>@i.MinQuantity</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
 	</div>
 </div>
 
-<div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
-	<div class="card-header">Stock Alert</div>
-	<div class="card-body">
-		<h5 class="card-title"> 30days Remaining to expire Items</h5>
-		<p class="card-text" style="font-size: 24px; font-weight: bold;">
-			@ViewBag.ExpAlert
-		</p>
+
+<div class="container mt-5">
+	<div class="card shadow-lg rounded">
+		<div class="card-header bg-warning text-dark text-center">
+			<h3 class="mb-0">🕒 30 Days Remaining for Expiry</h3>
+		</div>
+		<div class="card-body">
+			<table class="table table-bordered table-hover text-center align-middle">
+				<thead class="table-dark">
+					<tr>
+						<th scope="col">ID</th>
+						<th scope="col">Medicine</th>
+						<th scope="col">Batch No</th>
+						<th scope="col">Mfg Date</th>
+						<th scope="col">Expiry Date</th>
+						<th scope="col">Quantity</th>
+						<th scope="col">Min Quantity</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var i in ViewBag.PriorExpAlertTable)
+					{
+						<tr class="table-warning">
+							<th scope="row">@i.PurchaseItemId</th>
+							<td>@i.MedicineName</td>
+							<td>@i.BatchNo</td>
+							<td>@i.MfgDate.ToString("dd-MM-yyyy")</td>
+							<td class="fw-bold text-danger">@i.ExpiryDate.ToString("dd-MM-yyyy")</td>
+							<td>@i.Quantity</td>
+							<td>@i.MinQuantity</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
 	</div>
 </div>
 
 
+			@using System.Globalization
+@using Newtonsoft.Json
 
-<table class="table">
-	<thead>
-		<tr>
-			<th scope="col">ID</th>
-			<th scope="col">Medicine</th>
-			<th scope="col">BatchNo</th>
-			<th scope="col">mfg-date</th>
-			<th scope="col">ExpiryDate</th>
-			<th scope="col">Quantity</th>
-			<th scope="col">Minimum Quantity</th>
-		</tr>
-	</thead>
-	<tbody>
-		@foreach (var i in ViewBag.StockAlertTable)
-		{
-			<tr>
-				<th scope="row">@i.PurchaseItemId</th>
-				<td>@i.MedicineName</td>
-				<td>@i.BatchNo</td>
-				<td>@i.MfgDate</td>
-				<td>@i.ExpiryDate</td>
-				<td>@i.Quantity</td>
-				<td>@i.MinQuantity</td>
+@* @using Newtonsoft *@
+@{
+	List<SalesDtoSF> reportData = ViewBag.Report;
+	var labels = reportData.Select(x => CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(x.month)).ToList();
+	var data = reportData.Select(x => x.Total).ToList();
+}
 
-			</tr>
-		}
+<div class="container mt-5">
+	<div class="card shadow-lg rounded">
+		<div class="card-header bg-info text-white text-center">
+			<h3 class="mb-0"> Current Year Sale </h3>
+		</div>
+	</div>
+</div>
+<div>
+	<canvas id="myChart"></canvas>
+</div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-	</tbody>
-</table>
+<script>
+	const ctx = document.getElementById('myChart').getContext('2d');
+	const labels = @Html.Raw(JsonConvert.SerializeObject(labels));
+	const data = @Html.Raw(JsonConvert.SerializeObject(data));
 
-<table class="table">
-	<thead>
-		<tr>
-			<th scope="col">ID</th>
-			<th scope="col">Medicine</th>
-			<th scope="col">BatchNo</th>
-			<th scope="col">mfg-date</th>
-			<th scope="col">ExpiryDate</th>
-			<th scope="col">Quantity</th>
-			<th scope="col">Minimum Quantity</th>
-		</tr>
-	</thead>
-	<tbody>
-		@foreach (var i in ViewBag.expAlertTable)
-		{
-			<tr>
-				<th scope="row">@i.PurchaseItemId</th>
-				<td>@i.MedicineName</td>
-				<td>@i.BatchNo</td>
-				<td>@i.MfgDate</td>
-				<td>@i.ExpiryDate</td>
-				<td>@i.Quantity</td>
-				<td>@i.MinQuantity</td>
+	new Chart(ctx, {
+	type: 'bar',
+	data: {
+	labels: labels,
+	datasets: [{
+	label: 'Total Sales',
+	data: data,
+	backgroundColor: 'rgba(75, 192, 192, 0.6)',
+	borderColor: 'rgba(75, 192, 192, 1)',
+	borderWidth: 1
+	}]
+	},
+	options: {
+	responsive: true,
+	scales: {
+	y: {
+	beginAtZero: true,
+	title: {
+	display: true,
+	text: 'Total Amount'
+	}
+	},
+	x: {
+	title: {
+	display: true,
+	text: 'Month'
+	}
+	}
+	}
+	}
+	});
+</script>
 
-			</tr>
-		}
-
-
-	</tbody>
-</table>
-
-<table class="table">
-	<thead>
-		<tr>
-			<th scope="col">ID</th>
-			<th scope="col">Medicine</th>
-			<th scope="col">BatchNo</th>
-			<th scope="col">mfg-date</th>
-			<th scope="col">ExpiryDate</th>
-			<th scope="col">Quantity</th>
-			<th scope="col">Minimum Quantity</th>
-		</tr>
-	</thead>
-	<tbody>
-		@foreach (var i in ViewBag.PriorExpAlertTable)
-		{
-			<tr>
-				<th scope="row">@i.PurchaseItemId</th>
-				<td>@i.MedicineName</td>
-				<td>@i.BatchNo</td>
-				<td>@i.MfgDate</td>
-				<td>@i.ExpiryDate</td>
-				<td>@i.Quantity</td>
-				<td>@i.MinQuantity</td>
-
-			</tr>
-		}
+<div class="container mt-5">
+	<div class="card shadow-lg rounded">
+		<div class="card-header bg-primary text-white text-center">
+			<h3 class="mb-0"> Top 5 Medicines </h3>
+		</div>
+		</div>
+		</div>
+@{
+	List<Top5> e = ViewBag.Top5;
+	var PieLabels = e.Select(x=>x.MedicineName).ToList();
+	var PieData = e.Select(x => x.Quantity).ToList();
 
 
-	</tbody>
-</table>
+}
+<div class="container my-5" style="max-width: 550px;">
+	<canvas id="myPieChart" width="250" height="250" style="display: block;"></canvas>
+</div>
+
+<script>
+
+	const Pielabels = @Html.Raw(JsonConvert.SerializeObject(PieLabels));
+	const PieChartdata = @Html.Raw(JsonConvert.SerializeObject(PieData));
+	
+
+		const Piedata = {
+	  labels:Pielabels,
+	  datasets: [{
+		label: 'Quantity Sold',
+		data: PieChartdata,
+		backgroundColor: [
+		  'rgb(255, 99, 132)',
+		  'rgb(54, 162, 235)',
+		  'rgb(255, 205, 86)',
+		  'rgb(153, 102, 255)',
+		  'rgb(144, 238, 144)',		],
+		hoverOffset: 5
+	  }]
+	};
+		const config = {
+	  type: 'doughnut',
+	  data: Piedata,
+	};
+	new Chart
+	(
+		document.getElementById('myPieChart'),
+		config
+		
+	)
+
+</script>
+
+@* @{ *@
+@* 	List<SalesDtoSF> reportDataYear = ViewBag.year; *@
+@* 	var labelsYear = reportDataYear.Select(x =>  x.month).ToList(); *@
+@* 	var dataYear = reportDataYear.Select(x => x.Total).ToList(); *@
+@* } *@
+
+
+
+@* <div> *@
+@* 	<canvas id="myYearChart"></canvas> *@
+@* </div> *@
+
+
+@* <script> *@
+@* 	const ctx = document.getElementById('myYearChart').getContext('2d'); *@
+@* 	const labelsYears = @Html.Raw(JsonConvert.SerializeObject(labels)); *@
+@* 	const dataYears = @Html.Raw(JsonConvert.SerializeObject(data)); *@
+
+@* 	new Chart(ctx, { *@
+@* 	type: 'bar', *@
+@* 	data: { *@
+@* 	labels: labelsYears, *@
+@* 	datasets: [{ *@
+@* 	label: 'Total Sales', *@
+@* 	data: dataYears, *@
+@* 	backgroundColor: 'rgba(75, 192, 192, 0.6)', *@
+@* 	borderColor: 'rgba(75, 192, 192, 1)', *@
+@* 	borderWidth: 1 *@
+@* 	}] *@
+@* 	}, *@
+@* 	options: { *@
+@* 	responsive: true, *@
+@* 	scales: { *@
+@* 	y: { *@
+@* 	beginAtZero: true, *@
+@* 	title: { *@
+@* 	display: true, *@
+@* 	text: 'Total Amount' *@
+@* 	} *@
+@* 	}, *@
+@* 	x: { *@
+@* 	title: { *@
+@* 	display: true, *@
+@* 	text: 'Month' *@
+@* 	} *@
+@* 	} *@
+@* 	} *@
+@* 	} *@
+@* 	}); *@
+@* </script> *@

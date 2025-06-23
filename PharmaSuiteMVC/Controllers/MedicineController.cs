@@ -15,7 +15,7 @@ namespace PharmaSuiteMVC.Controllers
         public MedicineController(IConfiguration config) 
         {
             HttpClientHandler handler = new HttpClientHandler();
-            handler.ServerCertificateCustomValidationCallback = (SslPolicyErrors, chain, cert, sender) => { return true; };
+            handler.ServerCertificateCustomValidationCallback = (SslPolicyErrors, chain, cert, sender) => { return true;};
             client = new HttpClient(handler);
             _baseUrl = config["ApiSettings:BaseUrl"];
           
@@ -23,7 +23,7 @@ namespace PharmaSuiteMVC.Controllers
         public IActionResult Report()
         {
             List<PurchaseItemDto> meds = new List<PurchaseItemDto>();
-            string url = $"{_baseUrl}/api/Medicine/StockAlert";
+            string url = "https://localhost:7259/api/Medicine/StockAlert";
             HttpResponseMessage response = client.GetAsync(url).Result;
             if (response.IsSuccessStatusCode)
             {
@@ -82,14 +82,82 @@ namespace PharmaSuiteMVC.Controllers
                 ViewBag.PriorExpAlertTable = obj8;
             }
 
+            string urlTotalSales = "https://localhost:7259/api/Medicine/TodaySale/";
+            HttpResponseMessage responseTotalSale = client.GetAsync(urlTotalSales).Result;
+            if (responseTotalSale.IsSuccessStatusCode)
+            {
+                var json8 = responseTotalSale.Content.ReadAsStringAsync().Result;
+                var obj8 = JsonConvert.DeserializeObject<List<TodaySaleDto>>(json8);
+                ViewBag.TotalSaleToday = obj8;
+            }
+
+            string urlsMonth = "https://localhost:7259/api/Medicine/MonthGraph/";
+            HttpResponseMessage responsesMonth = client.GetAsync(urlsMonth).Result;
+            if (responsesMonth.IsSuccessStatusCode)
+            {
+                var json = responsesMonth.Content.ReadAsStringAsync().Result;
+                var obj = JsonConvert.DeserializeObject<List<SalesDtoSF>>(json);
+                ViewBag.Report = obj;
+            }
+
+            //string urlsYear = "https://localhost:7259/api/Medicine/YearGraph/";
+            //HttpResponseMessage responsesYear = client.GetAsync(urlsYear).Result;
+            //if (responsesYear.IsSuccessStatusCode)
+            //{
+            //    var json = responsesYear.Content.ReadAsStringAsync().Result;
+            //    var obj = JsonConvert.DeserializeObject<List<SalesDtoSF>>(json);
+            //    ViewBag.year = obj;
+            //}
+
+            string Sumurl = "https://localhost:7259/api/Medicine/SumSales/";
+            HttpResponseMessage responseSum = client.GetAsync(Sumurl).Result;
+            if (responseSum.IsSuccessStatusCode)
+            {
+                var json8 = responseSum.Content.ReadAsStringAsync().Result;
+                var obj8 = JsonConvert.DeserializeObject<int>(json8);
+                ViewBag.SumSale = obj8;
+            }
+
+            string SumMedsurl = "https://localhost:7259/api/Medicine/SumMedicines/";
+            HttpResponseMessage responseSumMeds = client.GetAsync(SumMedsurl).Result;
+            if (responseSumMeds.IsSuccessStatusCode)
+            {
+                var json8 = responseSumMeds.Content.ReadAsStringAsync().Result;
+                var obj8 = JsonConvert.DeserializeObject<int>(json8);
+                ViewBag.SumSaleMeds = obj8;
+            }
+            string Top5url = "https://localhost:7259/api/Medicine/Top5/";
+
+            HttpResponseMessage responseTop5 = client.GetAsync(Top5url).Result;
+            if (responseTop5.IsSuccessStatusCode)
+            {
+                var json8 = responseTop5.Content.ReadAsStringAsync().Result;
+                var obj8 = JsonConvert.DeserializeObject<List<Top5>>(json8);
+                ViewBag.Top5 = obj8;
+            }
+
 
             return View();
-        } 
+        }
+
+        public IActionResult empty() 
+        {
+            List<SalesDtoSF> meds = new List<SalesDtoSF>();
+            string url = "https://localhost:7259/api/Medicine/MonthGraph/";
+            HttpResponseMessage response = client.GetAsync(url).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                var json = response.Content.ReadAsStringAsync().Result;
+                var obj = JsonConvert.DeserializeObject<List<SalesDtoSF>>(json);
+                ViewBag.Report = obj;
+            }
+            return View();
+        }
 
         public IActionResult Index()
         {
             List<Medicine_Management> meds = new List<Medicine_Management>();
-            string url = $"{_baseUrl}/api/Medicine_Management/Fetch/";
+            string url = "https://localhost:7290/api/Medicine_Management/Fetch/";
             HttpResponseMessage response = client.GetAsync(url).Result;
             if (response.IsSuccessStatusCode)
             {
@@ -107,7 +175,7 @@ namespace PharmaSuiteMVC.Controllers
         public IActionResult Add_Medicine()
         {
             List<Category_Dto> cat = new List<Category_Dto>();
-            string url = $"{_baseUrl}/api/Medicine_Management/FetchCat/";
+            string url = "https://localhost:7290/api/Medicine_Management/FetchCat/";
             HttpResponseMessage response = client.GetAsync(url).Result;
             if (response.IsSuccessStatusCode)
             {
@@ -122,7 +190,7 @@ namespace PharmaSuiteMVC.Controllers
 
 
             List<Manifacture_Dto> mfg = new List<Manifacture_Dto>();
-            string url2 = $"{_baseUrl}/api/Medicine_Management/FetchMfg/";
+            string url2 = "https://localhost:7290/api/Medicine_Management/FetchMfg/";
             HttpResponseMessage response2 = client.GetAsync(url2).Result;
             if (response2.IsSuccessStatusCode)
             {
@@ -141,7 +209,7 @@ namespace PharmaSuiteMVC.Controllers
         [HttpPost]
         public IActionResult Add_Medicine(Medicine_Management meds)
         {
-            string url = $"{_baseUrl}/api/Medicine_Management/Add/";
+            string url = "https://localhost:7290/api/Medicine_Management/Add/";
             var json = JsonConvert.SerializeObject(meds);
             StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
             HttpResponseMessage response = client.PostAsync(url, content).Result;
@@ -156,7 +224,7 @@ namespace PharmaSuiteMVC.Controllers
         public IActionResult Delete_Medicine(int id)
         {
             Medicine_Management meds = new Medicine_Management();
-            string url = $"{_baseUrl}/api/Medicine_Management/Delete/";
+            string url = "https://localhost:7290/api/Medicine_Management/Delete/";
             HttpResponseMessage response = client.DeleteAsync(url + id).Result;
             if (response.IsSuccessStatusCode)
             {
@@ -168,7 +236,7 @@ namespace PharmaSuiteMVC.Controllers
         public IActionResult Edit_Medicine(int id)
         {
             List<Category_Dto> cat = new List<Category_Dto>();
-            string url = $"{_baseUrl}/api/Medicine_Management/FetchCat/";
+            string url = "https://localhost:7290/api/Medicine_Management/FetchCat/";
             HttpResponseMessage response = client.GetAsync(url).Result;
             if (response.IsSuccessStatusCode)
             {
@@ -183,7 +251,7 @@ namespace PharmaSuiteMVC.Controllers
 
 
             List<Manifacture_Dto> mfg = new List<Manifacture_Dto>();
-            string url2 = $"{_baseUrl}/api/Medicine_Management/FetchMfg/";
+            string url2 = "https://localhost:7290/api/Medicine_Management/FetchMfg/";
             HttpResponseMessage response2 = client.GetAsync(url2).Result;
             if (response2.IsSuccessStatusCode)
             {
@@ -197,7 +265,7 @@ namespace PharmaSuiteMVC.Controllers
 
             }
             Medicine_Management meds = new Medicine_Management();
-            string url3 = $"{_baseUrl}/api/Medicine_Management/Edit/";
+            string url3 = "https://localhost:7290/api/Medicine_Management/Edit/";
             HttpResponseMessage response3 = client.GetAsync(url3 + id).Result;
             if (response3.IsSuccessStatusCode)
             {
@@ -214,7 +282,7 @@ namespace PharmaSuiteMVC.Controllers
         [HttpPost]
         public IActionResult Edit_Medicine(Medicine_Management meds)
         {
-            string url = $"{_baseUrl}/api/Medicine_Management/PostEdit/";
+            string url = "https://localhost:7290/api/Medicine_Management/PostEdit/";
             var json = JsonConvert.SerializeObject(meds);
             StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
             HttpResponseMessage response = client.PutAsync(url, content).Result;
@@ -233,7 +301,7 @@ namespace PharmaSuiteMVC.Controllers
         [HttpPost]
         public IActionResult Add_Cat(CategoryDto_Add dto)
         {
-            string url = $"{_baseUrl}/api/Medicine_Management/AddCat/";
+            string url = "https://localhost:7290/api/Medicine_Management/AddCat/";
             var json = JsonConvert.SerializeObject(dto);
             StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
             HttpResponseMessage response = client.PostAsync(url, content).Result;
@@ -257,7 +325,7 @@ namespace PharmaSuiteMVC.Controllers
         [HttpPost]
         public IActionResult Add_Mfg(Manifacture_Dto_add add)
         {
-            string url = $"{_baseUrl}/api/Medicine_Management/AddMfg/";
+            string url = "https://localhost:7290/api/Medicine_Management/AddMfg/";
             var json = JsonConvert.SerializeObject(add);
             StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
             HttpResponseMessage response = client.PostAsync(url, content).Result;

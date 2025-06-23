@@ -1,10 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace PharmaSuiteWebAPI.Model
+﻿namespace PharmaSuiteWebAPI.Dto
 {
-    public class Supplier
+    public class SupplierDTO
     {
-        [Key]
         public int SupplierId { get; set; }
         public string Name { get; set; }
         public string ContactPerson { get; set; }
@@ -15,6 +12,5 @@ namespace PharmaSuiteWebAPI.Model
         public DateTime CreatedAt { get; set; }
         public string? ModifiedBy { get; set; }
         public DateTime? ModifiedAt { get; set; }
-        public ICollection<Purchase> Purchases { get; set; }
     }
 }

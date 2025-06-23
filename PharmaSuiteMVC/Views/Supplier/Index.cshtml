@@ -1,0 +1,454 @@
+﻿@* @model IEnumerable<PharmaSuiteMVC.Models.SupplierDTO>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="AddSup" class="btn btn-info">Add Supplier</a>
+</p>
+<table class="table" id="myTable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SupplierId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContactPerson)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ModifiedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ModifiedAt)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SupplierId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContactPerson)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ModifiedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ModifiedAt)
+            </td>
+            <td>
+
+                    @Html.ActionLink("Edit", "EditSup", new { id = item.SupplierId }, new{ @class = "btn btn-sm btn-success"})
+
+                    @Html.Raw($"<a href='/Supplier/DeleteSup/{item.SupplierId}' class='btn btn-sm btn-danger'' onclick=\"return confirm('Are you sure you want to delete this supplier?');\">Delete</a>")
+
+
+</td>
+        </tr>
+}
+    </tbody>
+</table> *@
+
+
+<button type="button" class="btn btn-primary" id="addbtn">Add Supplier</button>
+
+
+
+
+
+<div class="p-3">
+    <table class="table table-dark" id="myTable">
+        <thead>
+            <tr>
+                <th scope="col">SupplierId</th>
+                <th scope="col">Name</th>
+                <th scope="col">Contact Person</th>
+                <th scope="col">Email</th>
+                <th scope="col">Contact No</th>
+                <th scope="col">Address</th>
+                <th scope="col">Created By</th>
+                <th scope="col">Created At</th>
+                <th scope="col">Modified By</th>
+                <th scope="col">Modified At</th>
+                <th scope="col">Action</th>
+
+
+            </tr>
+        </thead>
+        <tbody id="empTable">
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+
+<!-- Button trigger modal -->
+@* <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    Launch demo modal
+</button> *@
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add New Supplier</h5>
+                <button type="button" id="close1" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @* <form id="addsupp" method="post">
+                <div id="Idsup">
+                Id <input type="text" readonly name="SupplierId" id="SupplierId" class="form-control" /><br />
+                </div>
+                Name <input type="text" name="Name" id="Name" class="form-control"     /><br />
+                Contact Person <input type="text" name="ContactPerson" id="ContactPerson" class="form-control" /><br />
+                Phone <input type="number" name="Phone" id="Phone" class="form-control" /><br />
+                Email <input type="email" name="Email" id="Email" class="form-control" /><br />
+                Address <input type="text" name="Address" id="Address" class="form-control" />
+                </form> *@
+
+
+                <form id="addsupp" method="post" data-ajax="false" data-val="true">
+                    <div id="Idsup">
+                        <label for="SupplierId">Id</label>
+                        <input type="text" readonly name="SupplierId" id="SupplierId" class="form-control" /><br />
+                    </div>
+
+                    <label for="Name">Name</label>
+                    <input type="text" name="Name" id="Name" class="form-control"
+                           required
+                           data-val="true"
+                           data-val-required="Name is required" />
+                    <span class="text-danger field-validation-valid"
+                          data-valmsg-for="Name"
+                          data-valmsg-replace="true"></span><br />
+
+                    <label for="ContactPerson">Contact Person</label>
+                    <input type="text" name="ContactPerson" id="ContactPerson" class="form-control"
+                           required
+                           data-val="true"
+                           data-val-required="Contact Person is required" />
+                    <span class="text-danger field-validation-valid"
+                          data-valmsg-for="ContactPerson"
+                          data-valmsg-replace="true"></span><br />
+
+                    <label for="Phone">Phone</label>
+                    <input type="text" name="Phone" id="Phone" class="form-control"
+                           required
+                           data-val="true"
+                           data-val-required="Phone number is required"
+                           data-val-regex="Phone number must be 10 digits"
+                           data-val-regex-pattern="^\d{10}$" />
+                    <span class="text-danger field-validation-valid"
+                          data-valmsg-for="Phone"
+                          data-valmsg-replace="true"></span><br />
+
+                    <label for="Email">Email</label>
+                    <input type="email" name="Email" id="Email" class="form-control"
+                           required
+                           data-val="true"
+                           data-val-required="Email is required"
+                           data-val-email="Invalid email address" />
+                    <span class="text-danger field-validation-valid"
+                          data-valmsg-for="Email"
+                          data-valmsg-replace="true"></span><br />
+
+                    <label for="Address">Address</label>
+                    <input type="text" name="Address" id="Address" class="form-control"
+                           required
+                           data-val="true"
+                           data-val-required="Address is required" />
+                    <span class="text-danger field-validation-valid"
+                          data-valmsg-for="Address"
+                          data-valmsg-replace="true"></span>
+                </form>
+
+
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="close2" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="newsup">Add Supplier</button>
+                <button type="button" id="updateBtn" class="btn btn-primary">Update changes</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+@* @section Scripts {
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="https://cdn.datatables.net/.../datatables.min.js" ...></script>
+    <script src="~/js/supplierajax.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable();
+        });
+    </script>
+}
+ *@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@section Scripts {
+
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+
+
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    <script src="~/js/supplierajax.js"></script>
+
+
+
+
+
+
+
+    <link href="https://cdn.datatables.net/v/ju/jq-3.7.0/dt-2.3.2/cc-1.0.4/r-3.0.4/sb-1.8.2/datatables.min.css" rel="stylesheet" integrity="sha384-riIr/BQoU+UiV8xv22R6kHqBY93+QFKjI37HmqJtscuolGePjdjLC5Hc8b8OvjP4" crossorigin="anonymous">
+
+    <script src="https://cdn.datatables.net/v/ju/jq-3.7.0/dt-2.3.2/cc-1.0.4/r-3.0.4/sb-1.8.2/datatables.min.js" integrity="sha384-uhZ6122tZtRixhbG5nZMpFDr9IY4hLm6XEp84OONWeVMg1R0PHryQelspivn6D4w" crossorigin="anonymous"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable();
+        });
+
+
+
+
+    </script>
+
+}
+
+
+
+
+
+
+
+
+
+
+@*
+
+Add Emp---------------------------------------
+    @model PharmaSuiteMVC.Models.SupplierDTO
+
+@{
+    ViewData["Title"] = "AddSup";
+}
+
+<h1>Add Supplier</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddSup">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ContactPerson" class="control-label"></label>
+                <input asp-for="ContactPerson" class="form-control" />
+                <span asp-validation-for="ContactPerson" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedBy" class="control-label"></label>
+                <input asp-for="CreatedBy" class="form-control" />
+                <span asp-validation-for="CreatedBy" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+ *@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*
+
+                @model PharmaSuiteMVC.Models.SupplierDTO
+
+@{
+    ViewData["Title"] = "EditSup";
+}
+
+<h1>
+    Edit Supplier
+
+</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditSup">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="SupplierId" class="control-label"></label>
+                <input asp-for="SupplierId" readonly class="form-control" />
+                <span asp-validation-for="SupplierId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ContactPerson" class="control-label"></label>
+                <input asp-for="ContactPerson" class="form-control" />
+                <span asp-validation-for="ContactPerson" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedBy" class="control-label"></label>
+                <input asp-for="CreatedBy" class="form-control" />
+                <span asp-validation-for="CreatedBy" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+ *@

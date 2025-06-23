@@ -1,3 +1,6 @@
+﻿using PharmaSuiteMVC.Filters;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -10,7 +13,7 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -24,8 +27,13 @@ app.UseSession();
 
 app.UseAuthorization();
 
+// Routes
 app.MapControllerRoute(
-    name: "default",
+    name: "home",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+    name: "sale",
+    pattern: "{controller=Sale}/{action=Sale}/{id?}");
 
 app.Run();

@@ -30,6 +30,14 @@ builder.Services.AddDbContext<PharmaSuiteDBContext>
             builder.Configuration.GetConnectionString("dbconn")
         )
     );
+builder.Services.AddScoped<ISaleRepo, SaleService>();
+builder.Services.AddScoped<ISupplierRepo, SupplierService>();
+
+builder.Services.AddAutoMapper(typeof(MappingData));
+builder.Services.AddScoped<ICustomerRepo, CustomerService>();
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

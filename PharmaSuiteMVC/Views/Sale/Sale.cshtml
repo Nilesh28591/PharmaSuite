@@ -1,0 +1,166 @@
+﻿
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+    .card {
+        border-radius: 1rem;
+        box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
+    }
+
+    .remove-btn {
+        margin-top: 2rem;
+    }
+
+    .lineTotal {
+        background-color: #e9ecef;
+    }
+</style>
+
+<div class="container py-5">
+    <div class="card p-4">
+        <h2 class="text-center text-primary mb-4">🧾 Sales & Billing - PharmaSuite</h2>
+
+        <form id="salesForm">
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <label class="form-label">Customer Name (optional)</label>
+                    <input type="text" name="CustomerName" class="form-control" placeholder="John Doe" />
+                </div>
+            </div>
+
+            <div class="mb-3 fw-bold border-bottom pb-2">🧾 Invoice Items</div>
+            <div id="invoiceItems">
+                <div class="row g-3 mb-3 invoice-row border p-3 rounded bg-light" data-index="0">
+                    <div class="col-md-3">
+                        <select class="form-select" name="MedicineId">
+                            <option value="" disabled selected>-- Select Medicine --</option>
+                            @foreach (var item in ViewBag.GetAllMedicine)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        </select>
+                        <small class="text-muted">Available Quantity: <span class="availableQty">-</span></small>
+
+                    </div>
+                    <div class="col-md-2">
+                        <input type="number" class="form-control quantity" name="Quantity" placeholder="Qty" min="1" required />
+                    </div>
+                    <div class="col-md-2">
+                        <input type="number" class="form-control unitPrice" name="UnitPrice" placeholder="Price/Unit" min="0" step="0.01" required readonly />
+                    </div>
+                    <div class="col-md-2">
+                        <input type="number" class="form-control discount" name="Discount" placeholder="Discount (%)" min="0" max="100" />
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control lineTotal" placeholder="Total" readonly />
+                    </div>
+                    <div class="col-md-1 d-flex align-items-center">
+                        <button type="button" class="btn btn-danger btn-sm" onclick="removeItem(this)">X</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <button type="button" class="btn btn-outline-secondary" onclick="addItem()">➕ Add Item</button>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h5>Total Amount: ₹<span id="totalAmountDisplay">0.00</span></h5>
+                    <input type="hidden" id="totalAmount" />
+                </div>
+
+                <div class="col-md-6 text-end">
+                    <button type="submit" class="btn btn-success">CASH</button>
+                    <button type="button" class="btn btn-primary" id="ShowModal">PAY BY UPI</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- UPI Modal -->
+<div class="modal fade" id="upiModal" tabindex="-1" aria-labelledby="upiModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center">
+            <div class="modal-header">
+                <h5 class="modal-title">UPI Payment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="fw-bold">Scan the QR code to pay ₹<span id="upiAmount"></span></p>
+                <div id="qrcode"></div>
+                <div class="mt-4">
+                    <p>Payment received?</p>
+                    <button class="btn btn-success me-2" id="paymentYes">Yes</button>
+                    <button class="btn btn-danger" id="paymentNo">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="medicineOptions" style="display:none;">
+    @foreach (var item in ViewBag.GetAllMedicine)
+    {
+        <option value="@item.Value">@item.Text</option>
+    }
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script src="~/js/sale.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Show UPI Modal
+            $('#ShowModal').on('click', function () {
+                var totalAmount = parseFloat($('#totalAmountDisplay').text());
+                if (isNaN(totalAmount) || totalAmount <= 0) {
+                    alert("Invalid amount.");
+                    return;
+                }
+
+                var upiID = "testuser@upi";
+                var payeeName = "PharmaSuite";
+                var upiURL = `upi://pay?pa=${upiID}&pn=${encodeURIComponent(payeeName)}&am=${totalAmount}&cu=INR`;
+
+                $('#upiAmount').text(totalAmount.toFixed(2));
+                $('#qrcode').empty();
+
+                QRCode.toCanvas(document.createElement('canvas'), upiURL, { width: 220 }, function (err, canvas) {
+                    if (!err) $('#qrcode').append(canvas);
+                });
+
+                $('#upiModal').modal('show');
+            });
+
+            // YES → Submit Sale
+            $('#paymentYes').on('click', function () {
+                $('#upiModal').modal('hide');
+                submitSale(); // 
+            });
+
+            // NO → Just close modal
+            $('#paymentNo').on('click', function () {
+                $('#upiModal').modal('hide');
+            });
+
+            // CASH Button triggers form submit
+            $('#salesForm').on('submit', function (e) {
+                e.preventDefault();
+                submitSale();
+            });
+
+            
+            $('#salesForm').on('input', calculateTotal);
+        });
+    </script>
+
+}
+
+
+
+
