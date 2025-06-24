@@ -99,6 +99,29 @@ namespace PharmaSuiteWebAPI.Migrations
                     b.ToTable("Customers");
                 });
 
+            modelBuilder.Entity("PharmaSuiteWebAPI.Model.Expense", b =>
+                {
+                    b.Property<int>("ExpenseId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExpenseId"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ExpenseId");
+
+                    b.ToTable("Expenses");
+                });
+
             modelBuilder.Entity("PharmaSuiteWebAPI.Model.Manifacturer_Medicine", b =>
                 {
                     b.Property<int>("ManId")

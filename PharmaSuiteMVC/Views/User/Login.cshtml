@@ -14,6 +14,7 @@
             <input asp-for="Password" type="password" class="form-control" required />
         </div>
         <button type="submit" class="btn btn-primary">Login</button>
+        <p>New user? <a asp-action="Register">Register here</a></p>
     </form>
     <p class="text-danger mt-2">@ViewBag.Message</p>
 </div>

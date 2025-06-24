@@ -91,5 +91,11 @@ namespace PharmaSuiteMVC.Controllers
             ViewBag.Message = "Username already taken.";
             return View();
         }
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login");
+        }
     }
 }

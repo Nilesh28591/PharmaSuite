@@ -1,0 +1,31 @@
+﻿@model List<PharmaSuiteMVC.Models.ExpenseDto>
+@{
+    ViewBag.Title = "All Expenses";
+}
+
+<h2>All Expenses</h2>
+<a asp-action="Add" class="btn btn-primary">Add New Expense</a>
+<a asp-action="Profit" class="btn btn-success ml-2">Calculate Profit</a>
+
+@if (!Model.Any())
+{
+    <p class="text-muted mt-3">No expenses found.</p>
+}
+else
+{
+    <table class="table table-bordered mt-3">
+        <tr>
+            <th>Category</th>
+            <th>Amount</th>
+            <th>Date</th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Category</td>
+                <td>@item.Amount</td>
+                <td>@item.Date.ToShortDateString()</td>
+            </tr>
+        }
+    </table>
+}

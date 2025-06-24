@@ -89,12 +89,13 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - EstatePro</title>
+    <title>@ViewData["Title"] - PharmaSuite</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/EstatePro.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/PharmaSuite.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
 
 </head>
 <body>
@@ -104,7 +105,7 @@
         }
 
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <h4 class="navbar-brand mb-0 text-white">EstatePro</h4>
+            <h4 class="navbar-brand mb-0 text-white">PharmaSuite</h4>
 
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav mr-auto">
@@ -115,7 +116,10 @@
                             <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="LogReg" asp-action="Login">Login</a>
+                            <a class="nav-link" asp-controller="User" asp-action="Login">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="User" asp-action="Register">Register</a>
                         </li>
                     }
                     else if (role == "Admin")
@@ -127,8 +131,8 @@
                         <li class="nav-item"><a class="nav-link" asp-controller="Transaction" asp-action="getAllTransactions">Transactions</a></li>
                         <li class="nav-item"><a class="nav-link" asp-controller="Lease" asp-action="Index">Lease Management</a></li>
                         <li class="nav-item"><a class="nav-link" asp-controller="Review" asp-action="Index">Reviews</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Report" asp-action="Index">Reports</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="LogReg" asp-action="Logout">Logout</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Expense" asp-action="Add">Expense</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="User" asp-action="Logout">Logout</a></li>
                     }
                     else if (role == "Agent" || role == "Seller")
                     {
@@ -139,7 +143,7 @@
                         <li class="nav-item"><a class="nav-link" asp-controller="Transaction" asp-action="getAllTransactions">Transactions</a></li>
                         <li class="nav-item"><a class="nav-link" asp-controller="Lease" asp-action="Index">Lease Management</a></li>
                         <li class="nav-item"><a class="nav-link" asp-controller="Review" asp-action="Index">Reviews</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="LogReg" asp-action="Logout">Logout</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="User" asp-action="Logout">Logout</a></li>
                     }
                     else if (role == "Buyer")
                     {
@@ -149,7 +153,7 @@
                         <li class="nav-item"><a class="nav-link" asp-controller="Booking" asp-action="Index">Bookings</a></li>
                         <li class="nav-item"><a class="nav-link" asp-controller="Transaction" asp-action="getTransactionById">Transactions</a></li>
                         <li class="nav-item"><a class="nav-link" asp-controller="Review" asp-action="Index">Reviews</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="LogReg" asp-action="Logout">Logout</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="User" asp-action="Logout">Logout</a></li>
                     }
                     else if (role == "Tenant")
                     {
@@ -174,12 +178,13 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2025 - EstatePro - <a asp-area="" asp-controller="Home" asp-action="Index">Privacy</a>
+            &copy; 2025 - PharmaSuite - <a asp-area="" asp-controller="Home" asp-action="Index">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -128,6 +128,12 @@ $(document).on('input', '#quantity', function () {
 // =========================
 // STEP 3: Submitting the Purchase
 // =========================
+
+$(document).on("click", "#addPurchaseButton", function () {
+    $("#purchaseForm")[0].reset();
+    $("#purchaseForm").removeData("purchaseId"); // Important
+});
+
 $(function () {
     loadPurchases();
     loadSuppliers();
