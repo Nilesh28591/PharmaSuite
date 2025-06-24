@@ -36,6 +36,8 @@ builder.Services.AddScoped<ISupplierRepo, SupplierService>();
 
 builder.Services.AddAutoMapper(typeof(MappingData));
 builder.Services.AddScoped<ICustomerRepo, CustomerService>();
+builder.Services.AddScoped<MedicineRepo, MedicineService>();
+
 
 
 builder.Services.AddScoped<IExpenseRepository, ExpenseRepository>();

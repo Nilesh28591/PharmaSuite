@@ -58,7 +58,7 @@ namespace PharmaSuiteMVC.Controllers
             if (response4.IsSuccessStatusCode)
             {
                 var json2 = response4.Content.ReadAsStringAsync().Result;
-                var obj2 = JsonConvert.DeserializeObject<List<PurchaseItemDto>>(json2);
+                var obj2 = JsonConvert.DeserializeObject<List<PurchaseItemDtoSf>>(json2);
                 ViewBag.StockAlertTable = obj2;
             }
 
@@ -68,7 +68,7 @@ namespace PharmaSuiteMVC.Controllers
             if (response5.IsSuccessStatusCode)
             {
                 var json2 = response5.Content.ReadAsStringAsync().Result;
-                var obj2 = JsonConvert.DeserializeObject<List<PurchaseItemDto>>(json2);
+                var obj2 = JsonConvert.DeserializeObject<List<PurchaseItemDtoSf>>(json2);
                 ViewBag.expAlertTable = obj2;
             }
 
@@ -78,7 +78,7 @@ namespace PharmaSuiteMVC.Controllers
             if (response6.IsSuccessStatusCode)
             {
                 var json8 = response6.Content.ReadAsStringAsync().Result;
-                var obj8 = JsonConvert.DeserializeObject<List<PurchaseItemDto>>(json8);
+                var obj8 = JsonConvert.DeserializeObject<List<PurchaseItemDtoSf>>(json8);
                 ViewBag.PriorExpAlertTable = obj8;
             }
 

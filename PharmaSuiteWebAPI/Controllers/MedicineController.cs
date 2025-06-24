@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using PharmaSuiteWebAPI.Data;
 using PharmaSuiteWebAPI.Dto;
 using PharmaSuiteWebAPI.Model;
+using PharmaSuiteWebAPI.Repo;
 
 namespace PharmaSuiteWebAPI.Controllers
 {
@@ -14,17 +15,16 @@ namespace PharmaSuiteWebAPI.Controllers
     {
         PharmaSuiteDBContext db;
         IMapper mapper;
+        MedicineRepo MedRepo;
 
-        public MedicineController(PharmaSuiteDBContext db , IMapper mapper) { this.db = db; this.mapper = mapper; }
+        public MedicineController(PharmaSuiteDBContext db , IMapper mapper , MedicineRepo MedRepo) { this.db = db; this.mapper = mapper; this.MedRepo = MedRepo;}
 
 
         [HttpGet]
         [Route("StockAlert")]
         public IActionResult stockAlert() 
         {
-            int lowStockCount = db.purchaseItem
-                      .Where(x => x.Quantity <= x.Quantity)
-                      .Count();
+            int lowStockCount = MedRepo.StockAlertCount();
             return Ok(lowStockCount);
         }
 
@@ -32,7 +32,7 @@ namespace PharmaSuiteWebAPI.Controllers
         [Route("ExpAlert")]
         public IActionResult ExpAlert()
         {
-            int lowStockCount = db.purchaseItem.Where(x => x.ExpiryDate <= DateTime.Now).Count();
+            int lowStockCount = MedRepo.ExpAlert();
             return Ok(lowStockCount);
         }
 
@@ -40,9 +40,9 @@ namespace PharmaSuiteWebAPI.Controllers
         [Route("PriorExpAlert")]
         public IActionResult PriorExpAlert()
         {
-            DateTime Days30 = DateTime.Now + TimeSpan.FromDays(30);
 
-            int lowStockCount = db.purchaseItem.Where(x => x.ExpiryDate <= Days30 && x.ExpiryDate>= DateTime.Now).Count();
+
+            int lowStockCount = MedRepo.PriorExpAlert();
             return Ok(lowStockCount);
         }
 
@@ -64,9 +64,9 @@ namespace PharmaSuiteWebAPI.Controllers
             //    MinQuantity = x.Quantity
             //}
 
-            var lowStockCounta = db.purchaseItem.Where(x => x.Quantity <= x.MinQuantity).Include(x=>x.Medicine).ToList();
+            //var lowStockCounta = db.purchaseItem.Where(x => x.Quantity <= x.MinQuantity).Include(x=>x.Medicine).ToList();
 
-            var lowStockCount = mapper.Map<List<PurchaseItemDtoSF>>(lowStockCounta);
+            var lowStockCount = MedRepo.StockAlertTable();
 
             return Ok(lowStockCount);
         }
@@ -76,8 +76,8 @@ namespace PharmaSuiteWebAPI.Controllers
         [Route("ExpAlertTable")]
         public IActionResult ExpAlertTable()
         {
-            var lowStockCounta = db.purchaseItem.Where(x => x.ExpiryDate <= DateTime.Now).Include(x => x.Medicine).ToList();
-            var lowStockCount = mapper.Map<List<PurchaseItemDtoSF>>(lowStockCounta);
+            //var lowStockCounta = db.purchaseItem.Where(x => x.ExpiryDate <= DateTime.Now).Include(x => x.Medicine).ToList();
+            var lowStockCount = MedRepo.ExpAlertTable();
             return Ok(lowStockCount);
         }
 
@@ -116,10 +116,10 @@ namespace PharmaSuiteWebAPI.Controllers
         [Route("PriorExpAlertTable")]
         public IActionResult PriorExpAlertTable()
         {
-            DateTime Days30 = DateTime.Now + TimeSpan.FromDays(30);
+            //DateTime Days30 = DateTime.Now + TimeSpan.FromDays(30);
 
-            var lowStockCounta = db.purchaseItem.Where(x => x.ExpiryDate <= Days30 && x.ExpiryDate > DateTime.Now).Include(x => x.Medicine).ToList();
-            var lowStockCount = mapper.Map<List<PurchaseItemDtoSF>>(lowStockCounta);
+            //var lowStockCounta = db.purchaseItem.Where(x => x.ExpiryDate <= Days30 && x.ExpiryDate > DateTime.Now).Include(x => x.Medicine).ToList();
+            var lowStockCount = MedRepo.PriorExpAlertTable();
             return Ok(lowStockCount);
         }
 
@@ -127,19 +127,21 @@ namespace PharmaSuiteWebAPI.Controllers
         [Route("Add")]
         public IActionResult Add_Medicine(Medicine_Dto Dto)
         {
-            var medicine = mapper.Map<Medicine_Management>(Dto);
-            //var medicine = new Medicine_Management()
-            //{
-            //    MedicineId = Dto.MedicineId,
-            //    Name = Dto.Name,
-            //    Category = Dto.Category,
-            //    Manufacturer = Dto.Manufacturer,
-            //    PricePerUnit = Dto.PricePerUnit,
-            //    ExpiryDate = Dto.ExpiryDate,
-            //    BatchNo = Dto.BatchNo,
-            //};
-            db.Medicine_Managements.Add(medicine);
-            db.SaveChanges();
+            //var medicine = mapper.Map<Medicine_Management>(Dto);
+            ////var medicine = new Medicine_Management()
+            ////{
+            ////    MedicineId = Dto.MedicineId,
+            ////    Name = Dto.Name,
+            ////    Category = Dto.Category,
+            ////    Manufacturer = Dto.Manufacturer,
+            ////    PricePerUnit = Dto.PricePerUnit,
+            ////    ExpiryDate = Dto.ExpiryDate,
+            ////    BatchNo = Dto.BatchNo,
+            ////};
+            //db.Medicine_Managements.Add(medicine);
+            //db.SaveChanges();
+
+            MedRepo.Add_Medicine(Dto);
             return Ok("success");
         }
 
@@ -147,29 +149,32 @@ namespace PharmaSuiteWebAPI.Controllers
         [Route("Fetch")]
         public IActionResult Fetch_Medicine()
         {
-            var list = db.Medicine_Managements.ToList();
+            var list = MedRepo.Fetch_Medicine();
+
             return Ok(list);
         }
+
 
 
         [HttpGet]
         [Route("Edit/{id}")]
         public IActionResult Edit_Medicine(int id)
         {
-            var list = db.Medicine_Managements.Find(id);
+            var list = MedRepo.Edit_Medicine(id);
             return Ok(list);
 
         }
+
 
         [HttpDelete]
         [Route("Delete/{id}")]
 
         public IActionResult Delete_Medicine(int id)
         {
-            var list = db.Medicine_Managements.Find(id);
-            db.Medicine_Managements.Remove(list);
-            db.SaveChanges();
-
+            var list = MedRepo.Edit_Medicine(id);
+            //db.Medicine_Managements.Remove(list);
+            //db.SaveChanges();
+            MedRepo.Delete_Medicine(list);
             return Ok("success");
         }
 
@@ -179,13 +184,16 @@ namespace PharmaSuiteWebAPI.Controllers
         [Route("PostEdit")]
         public IActionResult Edit_Medicine(Medicine_Dto dto)
         {
-            var list = mapper.Map<Medicine_Management>(dto);
+            
+            var list = MedRepo.Particular_Edit_Medicine(dto);
             //var list = new Medicine_Management()
             //{
             //    MedicineId = dto.MedicineId
             //};
-            db.Medicine_Managements.Update(list);
-            db.SaveChanges();
+            //MedRepo.Update_Medicine(list);
+            //db.Medicine_Managements.Update(list);
+            //db.SaveChanges();
+            MedRepo.Update_Medicine(list);
             return Ok("success");
         }
 
@@ -193,17 +201,18 @@ namespace PharmaSuiteWebAPI.Controllers
         [Route("AddCat")]
         public IActionResult Add_Cat(CategoryDto_Add Dto)
         {
-            var medicine = mapper.Map<Category>(Dto);
-            //var medicine = new Category()
-            //{
-            //    CatId = Dto.CatId,
-            //    CategoryName = Dto.CategoryName,
-            //    CreatedAt = Dto.CreatedAt,
-            //    CreatedBy = Dto.CreatedBy,
-            //    Status = Dto.Status,
-            //};
-            db.Medicine_categories.Add(medicine);
-            db.SaveChanges();
+            Add_Cat(Dto);
+            //var medicine = mapper.Map<Category>(Dto);
+            ////var medicine = new Category()
+            ////{
+            ////    CatId = Dto.CatId,
+            ////    CategoryName = Dto.CategoryName,
+            ////    CreatedAt = Dto.CreatedAt,
+            ////    CreatedBy = Dto.CreatedBy,
+            ////    Status = Dto.Status,
+            ////};
+            //db.Medicine_categories.Add(medicine);
+            //db.SaveChanges();
             return Ok("success");
         }
 
@@ -211,7 +220,7 @@ namespace PharmaSuiteWebAPI.Controllers
         [Route("FetchCat")]
         public IActionResult Fetch_Categories()
         {
-            var list = db.Medicine_categories.Where(x => x.Status.Equals("Active")).ToList();
+            var list =MedRepo.Fetch_Cat();
             return Ok(list);
         }
 
@@ -220,17 +229,18 @@ namespace PharmaSuiteWebAPI.Controllers
         [Route("AddMfg")]
         public IActionResult Add_Mfg(Manifacturer_Dto_A Dto)
         {
-            var medicine = mapper.Map<Manifacturer_Medicine>(Dto); 
-            //var medicine = new Manifacturer_Medicine()
-            //{
-            //    ManId = Dto.ManId,
-            //    MName = Dto.MName,
-            //    CreatedAt = Dto.CreatedAt,
-            //    CreatedBy = Dto.CreatedBy,
-            //    Status = Dto.Status,
-            //};
-            db.Medicine_Manifacturer.Add(medicine);
-            db.SaveChanges();
+            //var medicine = mapper.Map<Manifacturer_Medicine>(Dto); 
+            ////var medicine = new Manifacturer_Medicine()
+            ////{
+            ////    ManId = Dto.ManId,
+            ////    MName = Dto.MName,
+            ////    CreatedAt = Dto.CreatedAt,
+            ////    CreatedBy = Dto.CreatedBy,
+            ////    Status = Dto.Status,
+            ////};
+            //db.Medicine_Manifacturer.Add(medicine);
+            //db.SaveChanges();
+            MedRepo.Add_mfg(Dto);
             return Ok("success");
         }
 
@@ -238,15 +248,18 @@ namespace PharmaSuiteWebAPI.Controllers
         [Route("FetchMfg")]
         public IActionResult Fetch_Mfg()
         {
-            var list = db.Medicine_Manifacturer.Where(x => x.Status.Equals("Active")).ToList();
+            //var list = db.Medicine_Manifacturer.Where(x => x.Status.Equals("Active")).ToList();
+            var list = MedRepo.Fetch_Mfg();
             return Ok(list);
         }
+
 
         [HttpGet]
         [Route("Sumsales")]
         public IActionResult SumSales()
         {
-            double list = db.Sales.Sum(x => x.TotalAmount);
+            //double list = db.Sales.Sum(x => x.TotalAmount);
+            double list = MedRepo.Sumsales();
             return Ok(list);
         }
 
@@ -254,7 +267,8 @@ namespace PharmaSuiteWebAPI.Controllers
         [Route("SumMedicines")]
         public IActionResult SumMeds()
         {
-            double list = db.purchaseItem.Sum(x => x.Quantity);
+            //double list = db.purchaseItem.Sum(x => x.Quantity);
+            double list = MedRepo.SumMedicines();
             return Ok(list);
         }
 
