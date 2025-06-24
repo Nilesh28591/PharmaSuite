@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PharmaSuiteWebAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class _123 : Migration
+    public partial class pharmasuitemedicinepurchase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

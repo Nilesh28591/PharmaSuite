@@ -126,7 +126,7 @@ namespace PharmaSuiteMVC.Controllers
             }
             return StatusCode((int)response.StatusCode,response.ReasonPhrase);
         }
-        [HttpPut("/Purchase/EditPurchase")]
+        [HttpPut("/Purchase/EditPurchase/{id}")]
         public IActionResult UpdatePurcase(int id, [FromBody] Purchase updatedDto)
         {
             var url = $"{_baseUrl}/api/Purchase/EditPurchase/{id}";

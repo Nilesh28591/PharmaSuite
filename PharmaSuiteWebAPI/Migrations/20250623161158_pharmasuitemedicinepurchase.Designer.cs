@@ -12,8 +12,8 @@ using PharmaSuiteWebAPI.Data;
 namespace PharmaSuiteWebAPI.Migrations
 {
     [DbContext(typeof(PharmaSuiteDBContext))]
-    [Migration("20250623054246_123")]
-    partial class _123
+    [Migration("20250623161158_pharmasuitemedicinepurchase")]
+    partial class pharmasuitemedicinepurchase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

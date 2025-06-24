@@ -111,6 +111,20 @@ $(document).on('change', '#medicineId', function () {
     $("#expiryDate").val(new Date(selected.data("expiry")).toISOString().split('T')[0]);
 });
 
+function calculateCoste() {
+    const priceperunit = parseFloat($("#medicinePrice").val());
+    const quantity = parseInt($("#quantity").val());
+    if (!isNaN(priceperunit) && !isNaN(quantity) && quantity > 0) {
+        const total = priceperunit * quantity;
+        $("#costPrice").val(total.toFixed(2));
+    } else {
+        $("#costPrice").val('');
+    }
+}
+
+$(document).on('input', '#quantity', function () {
+    calculateCoste();
+});
 // =========================
 // STEP 3: Submitting the Purchase
 // =========================
@@ -147,7 +161,7 @@ $(function () {
 
         if (purchaseId) {
             // It's an Edit case
-            url = `/Purchase/UpdatePurcase/${purchaseId}`;
+            url = `/Purchase/EditPurchase/${purchaseId}`;
             method = "PUT"; // You'd implement an Update method
         }
 
@@ -229,3 +243,4 @@ $(document).on("click", ".deleteBtn", function () {
         });
     }
 });
+
